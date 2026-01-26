@@ -31,9 +31,8 @@
     </div>
 
     <!-- KONTEN TENGAH -->
-    <section class="center siswa-center">
-      <h1 class="title siswa-title">PILIH MENU</h1>
-
+    <section class="siswa-center">
+      <h1 class="siswa-title">PILIH MENU</h1>
       <div class="panel-grid">
         <button class="panel-btn" id="btnBelajar" type="button">
           <div class="panel-emoji">📘</div>
@@ -126,13 +125,15 @@
     <p class="big-p">Media belajar matematika untuk anak tunagrahita.</p>
   </section>
 
-<audio id="bgMusic" loop preload="auto">
-  <source src="assets/sounds/mp3.1.mp3" type="audio/mpeg">
-</audio>
+  <!-- AUDIO SISWA -->
+  <audio id="bgMusic" loop>
+    <source src="/assets/sounds/mp3.1.mp3" type="audio/mpeg">
+  </audio>
 
-<audio id="sfxClick" preload="auto">
-  <source src="assets/sounds/click.mp3" type="audio/mpeg">
-</audio>
+  <audio id="clickSound">
+    <source src="/assets/sounds/click.mp3" type="audio/mpeg">
+  </audio>
+
 
   <!-- toast (kalau ui.js kamu pakai) -->
   <div class="toast" id="toast" aria-live="polite"></div>
