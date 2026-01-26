@@ -273,3 +273,29 @@ document.getElementById("btnBermain")?.addEventListener("click", async () => {
   // nanti redirect bermain:
   // window.location.href = "bermain.html";
 });
+
+
+// ===== NAVIGASI MENU SISWA =====
+const btnBelajar = document.getElementById("btnBelajar");
+const btnBermain = document.getElementById("btnBermain");
+
+if(btnBermain){
+  btnBermain.addEventListener("click", () => {
+    // Unlock audio + start bgm sebelum pindah halaman
+    const bgm = new Audio("../../assets/sounds/mp3.1.mp3");
+    bgm.loop = true;
+    bgm.volume = 0.4;
+
+    bgm.play().then(() => {
+      // simpan tanda bahwa audio sudah di-unlock
+      sessionStorage.setItem("bgmUnlocked", "1");
+      // pindah ke arena bermain
+      window.location.href = "./siswa_bermain.html";
+    }).catch(() => {
+      // kalau tetap diblok, tetap pindah halaman
+      window.location.href = "./siswa_bermain.html";
+    });
+  });
+}
+
+
