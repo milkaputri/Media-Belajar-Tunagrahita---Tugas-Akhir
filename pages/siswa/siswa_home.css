@@ -76,12 +76,18 @@
   background-repeat: no-repeat;
 
   display: flex;
-  flex-direction: column;
-  justify-content: center;   /* ⬅️ CENTER VERTIKAL */
-  align-items: center;       /* ⬅️ CENTER HORIZONTAL */
-
+  justify-content: center;   /* center vertikal */
+  align-items: center;       /* center horizontal */
   position: relative;
   overflow: hidden;
+
+  padding: 0 18px; /* biar aman di HP */
+}
+
+.siswa-center{
+  text-align: center;
+  width: 100%;
+  max-width: 900px;
 }
 
 
@@ -168,8 +174,11 @@
 
 @media (max-width: 480px){
   .siswa-title{ font-size: 44px; }
+
   .panel-grid{
     grid-template-columns: 1fr;
+    gap: 18px;
   }
-  .panel-text{ font-size: 30px; }
+
+  .panel-btn{ max-width: 360px; }
 }

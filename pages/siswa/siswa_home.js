@@ -1,8 +1,9 @@
 /* =========================================================
-   SISWA_HOME.JS
+   SISWA_HOME.JS (FIXED + SOUND)
    - Sidebar (menu kiri)
    - Settings (⚙ kanan bawah)
    - Apply settings: theme, text size, music
+   - Sound: BGM + Click SFX (safe autoplay)
 ========================================================= */
 
 const htmlEl = document.documentElement;
@@ -14,9 +15,60 @@ const modalSettings = document.getElementById("modalSettings");
 const panelProfile = document.getElementById("panelProfile");
 const panelAbout = document.getElementById("panelAbout");
 
+// AUDIO (pastikan ada di HTML)
 const bgMusic = document.getElementById("bgMusic");
+const clickSound = document.getElementById("clickSound"); // tambahkan di HTML
 
-// ---------- overlay helpers ----------
+// ============= SETTINGS STATE =============
+let settings = Storage.getSettings();
+
+// ============= AUDIO HELPERS =============
+function setAudioState() {
+  if (!bgMusic) return;
+
+  bgMusic.volume = 0.4;
+
+  if (settings.music) {
+    // jangan paksa autoplay, akan dicoba di tryPlayMusic()
+  } else {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+  }
+}
+
+function playClickSfx() {
+  if (!settings.music) return;
+  if (!clickSound) return;
+
+  try {
+    clickSound.currentTime = 0;
+    clickSound.volume = 0.8;
+    clickSound.play();
+  } catch {}
+}
+
+async function tryPlayMusic() {
+  if (!bgMusic) return;
+  if (!settings.music) return;
+
+  try {
+    bgMusic.volume = 0.4;
+    await bgMusic.play();
+  } catch {
+    // autoplay diblok browser -> normal
+  }
+}
+
+// Klik pertama di halaman = trigger autoplay musik (sekali saja)
+document.addEventListener(
+  "pointerdown",
+  () => {
+    tryPlayMusic();
+  },
+  { once: true }
+);
+
+// ============= overlay helpers =============
 function showOverlay() {
   overlay.classList.add("show");
   overlay.setAttribute("aria-hidden", "false");
@@ -26,7 +78,7 @@ function hideOverlay() {
   overlay.setAttribute("aria-hidden", "true");
 }
 
-// ---------- close helpers ----------
+// ============= close helpers =============
 function closeSidebar() {
   sidebar.setAttribute("aria-hidden", "true");
   document.body.classList.remove("sidebar-open");
@@ -48,43 +100,52 @@ function closeAllFloating() {
 }
 
 // klik overlay = tutup semuanya
-overlay.addEventListener("click", closeAllFloating);
+overlay.addEventListener("click", () => {
+  playClickSfx();
+  closeAllFloating();
+});
 
 // =========================================================
 // 1) SIDEBAR
 // =========================================================
 function openSidebar() {
+  playClickSfx();
   closePanels();
   closeSettings();
   sidebar.setAttribute("aria-hidden", "false");
-  document.body.classList.add("sidebar-open"); // biar tombol ☰ gak numpuk
+  document.body.classList.add("sidebar-open");
   showOverlay();
 }
 
-document.getElementById("menuBtn").addEventListener("click", openSidebar);
-document.getElementById("sidebarClose").addEventListener("click", closeAllFloating);
+document.getElementById("menuBtn")?.addEventListener("click", openSidebar);
+
+document.getElementById("sidebarClose")?.addEventListener("click", () => {
+  playClickSfx();
+  closeAllFloating();
+});
 
 // menu sidebar
 document.querySelectorAll(".nav-item").forEach(btn => {
   btn.addEventListener("click", () => {
+    playClickSfx();
+
     document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
     const dest = btn.dataset.nav;
 
-    // home
     if (dest === "home") {
       closeAllFloating();
       return;
     }
 
-    // profile / about pakai panel
     if (dest === "profile" && panelProfile) {
       closeSidebar();
       panelProfile.setAttribute("aria-hidden", "false");
       showOverlay();
       return;
     }
+
     if (dest === "about" && panelAbout) {
       closeSidebar();
       panelAbout.setAttribute("aria-hidden", "false");
@@ -92,9 +153,7 @@ document.querySelectorAll(".nav-item").forEach(btn => {
       return;
     }
 
-    // keluar (dummy)
     if (dest === "keluar") {
-      // contoh: kembali ke halaman awal
       window.location.href = "/index.html";
     }
   });
@@ -103,6 +162,7 @@ document.querySelectorAll(".nav-item").forEach(btn => {
 // close panel (jika ada)
 document.querySelectorAll("[data-closepanel]").forEach(btn => {
   btn.addEventListener("click", () => {
+    playClickSfx();
     const id = btn.dataset.closepanel;
     const el = document.getElementById(id);
     if (el) el.setAttribute("aria-hidden", "true");
@@ -113,19 +173,25 @@ document.querySelectorAll("[data-closepanel]").forEach(btn => {
 // =========================================================
 // 2) SETTINGS (⚙)
 // =========================================================
-document.getElementById("settingsBtn").addEventListener("click", () => {
+document.getElementById("settingsBtn")?.addEventListener("click", () => {
+  playClickSfx();
   closeSidebar();
   closePanels();
   modalSettings.setAttribute("aria-hidden", "false");
   showOverlay();
 });
 
-// tombol X di modal settings (data-close="modalSettings")
+// tombol X di modal (data-close="...")
 document.querySelectorAll("[data-close]").forEach(btn => {
   btn.addEventListener("click", () => {
+    playClickSfx();
     const id = btn.dataset.close;
     const el = document.getElementById(id);
     if (el) el.setAttribute("aria-hidden", "true");
+
+    // kalau tidak ada panel/sidebar yg terbuka, matikan overlay
+    closeSidebar();
+    closePanels();
     hideOverlay();
   });
 });
@@ -134,10 +200,9 @@ document.querySelectorAll("[data-close]").forEach(btn => {
 // 3) APPLY SETTINGS: theme, text, music
 // =========================================================
 function applySettings(s) {
-  htmlEl.setAttribute("data-theme", s.theme); // light/dark
-  htmlEl.setAttribute("data-text", s.text);  // sm/md/lg
+  htmlEl.setAttribute("data-theme", s.theme);
+  htmlEl.setAttribute("data-text", s.text);
 
-  // active state button
   document.querySelectorAll("[data-theme]").forEach(b => {
     b.classList.toggle("active", b.dataset.theme === s.theme);
   });
@@ -145,20 +210,21 @@ function applySettings(s) {
     b.classList.toggle("active", b.dataset.textsize === s.text);
   });
 
-  // icon music
   const soundBtn = document.getElementById("soundBtn");
   if (soundBtn) {
     soundBtn.textContent = s.music ? "🔊" : "🔇";
     soundBtn.classList.toggle("off", !s.music);
   }
+
+  setAudioState();
 }
 
-let settings = Storage.getSettings();
 applySettings(settings);
 
 // ubah text size
 document.querySelectorAll("[data-textsize]").forEach(btn => {
   btn.addEventListener("click", () => {
+    playClickSfx();
     settings.text = btn.dataset.textsize;
     Storage.saveSettings(settings);
     applySettings(settings);
@@ -168,6 +234,7 @@ document.querySelectorAll("[data-textsize]").forEach(btn => {
 // ubah theme
 document.querySelectorAll("[data-theme]").forEach(btn => {
   btn.addEventListener("click", () => {
+    playClickSfx();
     settings.theme = btn.dataset.theme;
     Storage.saveSettings(settings);
     applySettings(settings);
@@ -175,37 +242,34 @@ document.querySelectorAll("[data-theme]").forEach(btn => {
 });
 
 // toggle music
-const soundBtn = document.getElementById("soundBtn");
-if (soundBtn) {
-  soundBtn.addEventListener("click", async () => {
-    settings.music = !settings.music;
-    Storage.saveSettings(settings);
-    applySettings(settings);
+document.getElementById("soundBtn")?.addEventListener("click", async () => {
+  // klik saat mau mengaktifkan musik juga harus berbunyi? -> aman: bunyikan dulu sebelum dimatikan
+  if (settings.music) playClickSfx();
 
-    try {
-      if (settings.music) await bgMusic.play();
-      else bgMusic.pause();
-    } catch (e) {
-      // autoplay kadang diblok browser, tapi setting tetap tersimpan
-    }
-  });
-}
+  settings.music = !settings.music;
+  Storage.saveSettings(settings);
+  applySettings(settings);
 
+  // kalau baru ON, coba play sekarang (user baru klik jadi autoplay aman)
+  if (settings.music) {
+    playClickSfx();
+    await tryPlayMusic();
+  }
+});
 
-function tryPlayMusic() {
-  const music = document.getElementById("bgMusic");
-  if (!music) return;
+// =========================================================
+// 4) CLICK SFX UNTUK TOMBOL UTAMA (BELAJAR/BERMAIN)
+// =========================================================
+document.getElementById("btnBelajar")?.addEventListener("click", async () => {
+  playClickSfx();
+  await tryPlayMusic();
+  // nanti redirect belajar:
+  // window.location.href = "belajar.html";
+});
 
-  const settings = Storage.getSettings();
-  if (!settings.music) return;
-
-  music.volume = 0.4;
-
-  music.play().catch(() => {
-    console.log("Autoplay diblokir, tunggu interaksi user");
-  });
-}
-
-document.addEventListener("click", () => {
-  tryPlayMusic();
-}, { once: true });
+document.getElementById("btnBermain")?.addEventListener("click", async () => {
+  playClickSfx();
+  await tryPlayMusic();
+  // nanti redirect bermain:
+  // window.location.href = "bermain.html";
+});
