@@ -1,0 +1,175 @@
+/* background tetap sama seperti home */
+.siswa-screen{
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url("../../assets/image/background2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* kanan atas: avatar + halo */
+.top-right-wrap{
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-right-wrap .avatar{
+  width: 64px;
+  height: 64px;
+  background: transparent;
+  border: none;
+  display: grid;
+  place-items: center;
+}
+
+.top-right-wrap .avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px; /* radius avatar */
+}
+
+.hello{
+  background: rgba(255,255,255,.70);
+  backdrop-filter: blur(6px);
+  padding: 10px 12px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  max-width: 220px;
+}
+
+.hello-small{
+  font-weight: 900;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.hello-name{
+  font-weight: 900;
+  letter-spacing: 1px;
+  font-size: 18px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* tengah */
+.siswa-screen{
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url("../../assets/image/background2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* ⬅️ CENTER VERTIKAL */
+  align-items: center;       /* ⬅️ CENTER HORIZONTAL */
+
+  position: relative;
+  overflow: hidden;
+}
+
+
+.siswa-title{
+  margin: 0 0 24px;
+  font-size: 64px;
+  letter-spacing: 4px;
+  color: #1b2a3a;
+}
+
+/* 2 panel tombol */
+.panel-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px;
+  width: min(720px, 92vw);
+  margin-inline: auto;
+  min-height: var(--tap);
+}
+
+.panel-btn{
+  border: 0;
+  cursor: pointer;
+  border-radius: 22px;
+  padding: 18px 16px;
+  background: rgba(63,91,255,.92);
+  color: #fff;
+  box-shadow: 0 16px 0 rgba(0,0,0,.10);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  min-height: 160px;
+}
+
+.panel-btn:hover{
+  transform: translateY(6px);
+  box-shadow: 0 10px 18px rgba(63,91,255,.35);
+  filter: brightness(.98);
+}
+
+.panel-emoji{
+  font-size: 54px;
+  margin-bottom: 10px;
+}
+
+.panel-text{
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 34px;
+}
+
+/* robot + bubble (pakai dari home kamu, tapi aman di HP) */
+/* .character{
+  position: absolute;
+  left: 16px;
+  bottom: 92px;
+  width: 96px;
+  height: 96px;
+  z-index: 2;
+}
+.character img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+} */
+
+/* .bubble{
+  position: absolute;
+  left: calc(16px + 96px + 12px);
+  bottom: 104px;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 2;
+
+  width: min(260px, calc(100vw - (16px + 96px + 24px)));
+} */
+
+/* tombol menu & settings harus paling atas */
+.icon-btn{
+  z-index: 9999;
+  position: fixed;   /* biar konsisten */
+}
+
+
+@media (max-width: 480px){
+  .siswa-title{ font-size: 44px; }
+  .panel-grid{
+    grid-template-columns: 1fr;
+  }
+  .panel-text{ font-size: 30px; }
+}

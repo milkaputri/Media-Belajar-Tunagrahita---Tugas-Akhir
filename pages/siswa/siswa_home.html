@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="id" data-theme="light" data-text="md">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Halaman Utama Siswa</title>
+
+  <!-- CSS yang sudah kamu punya -->
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+
+  <!-- CSS khusus halaman siswa -->
+  <link rel="stylesheet" href="siswa_home.css" />
+</head>
+<body>
+
+  <main class="screen siswa-screen">
+    <!-- MENU kiri atas -->
+    <button class="icon-btn top-left" id="menuBtn" aria-label="Menu">☰</button>
+
+    <!-- KANAN ATAS: avatar + HALO, nama -->
+    <div class="top-right-wrap" aria-label="Profil siswa">
+      <div class="avatar" aria-hidden="true">
+        <img src="/assets/image/logo.png" alt="Avatar" />
+      </div>
+      <div class="hello">
+        <div class="hello-small">HALO,</div>
+        <div class="hello-name" id="studentName">SISWA</div>
+      </div>
+    </div>
+
+    <!-- KONTEN TENGAH -->
+    <section class="center siswa-center">
+      <h1 class="title siswa-title">PILIH MENU</h1>
+
+      <div class="panel-grid">
+        <button class="panel-btn" id="btnBelajar" type="button">
+          <div class="panel-emoji">📘</div>
+          <div class="panel-text">BELAJAR</div>
+        </button>
+
+        <button class="panel-btn" id="btnBermain" type="button">
+          <div class="panel-emoji">🎮</div>
+          <div class="panel-text">BERMAIN</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ROBOT + BUBBLE
+    <div class="character" aria-hidden="true">
+      <img src="/assets/image/robo.png" alt="" />
+    </div>
+
+    <div class="bubble" aria-hidden="true">
+      <div class="bubble-title">HALO!</div>
+      <div class="bubble-text">Pilih BELAJAR atau BERMAIN ya 🙂</div>
+    </div> -->
+
+    <!-- SETTINGS kanan bawah -->
+    <button class="icon-btn bottom-right" id="settingsBtn" aria-label="Pengaturan">⚙</button>
+  </main>
+
+  <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-hidden="true">
+        <div class="sidebar-head">
+        <div class="sidebar-title">MENU</div>
+        <button class="sidebar-close" id="sidebarClose">✕</button>
+        </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-nav="home">🏠 Halaman utama</button>
+      <button class="nav-item" data-nav="profile">👤 Profile</button>
+      <button class="nav-item" data-nav="about">ℹ️ Tentang</button>
+      <button class="nav-item" data-nav="keluar">🚪 Keluar</button>
+    </nav>
+  </aside>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+  <!-- MODAL SETTINGS (pakai yang sama persis id-nya) -->
+  <section class="modal" id="modalSettings" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close="modalSettings">✕</button>
+      <h2 class="modal-title">PENGATURAN</h2>
+
+      <div class="setting-row">
+        <div class="setting-label">Ukuran teks</div>
+        <div class="segmented">
+          <button class="seg-btn" data-textsize="sm">A</button>
+          <button class="seg-btn" data-textsize="md">A</button>
+          <button class="seg-btn" data-textsize="lg">A</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Tema</div>
+        <div class="toggle">
+          <button class="toggle-btn" data-theme="light">🌞 Terang</button>
+          <button class="toggle-btn" data-theme="dark">🌙 Gelap</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Music</div>
+        <button class="sound-btn" id="soundBtn">🔊</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL (opsional, kalau kamu mau tetap punya profile/tentang popup) -->
+  <section class="panel card" id="panelProfile" aria-hidden="true">
+    <div class="panel-head">
+      <h2>Profile</h2>
+      <button class="panel-close" data-closepanel="panelProfile">✕</button>
+    </div>
+    <p class="big-p">Ini halaman profile siswa (contoh).</p>
+  </section>
+
+  <section class="panel card" id="panelAbout" aria-hidden="true">
+    <div class="panel-head">
+      <h2>Tentang</h2>
+      <button class="panel-close" data-closepanel="panelAbout">✕</button>
+    </div>
+    <p class="big-p">Media belajar matematika untuk anak tunagrahita.</p>
+  </section>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/sounds/mp3.1.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="sfxClick" preload="auto">
+  <source src="assets/sounds/click.mp3" type="audio/mpeg">
+</audio>
+
+  <!-- toast (kalau ui.js kamu pakai) -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <!-- JS -->
+  <script src="/js/storage.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="siswa_home.js"></script>
+</body>
+</html>
