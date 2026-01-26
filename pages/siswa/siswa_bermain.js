@@ -1,6 +1,12 @@
 /* ===============================
    ARENA BERMAIN - FINAL FIXED
 ================================ */
+import { genBil20_MengenalAngka } from "../../js/content/domains/bilangan/bil20/variants/mengenalAngka.js";
+import { renderDragDropNumberToBox } from "../../js/game/renderers/dragdrop_number_to_box.js";
+import { genBil20_TarikGaris } from "../../js/content/domains/bilangan/bil20/variants/tarikGaris.js";
+import { renderMatchLineCountToNumber } from "../../js/game/renderers/match_line_count_to_number.js";
+import { genBil20_Urutkan } from "../../js/content/domains/bilangan/bil20/variants/urutkan.js";
+import { renderUrutkanSequenceFill } from "../../js/game/renderers/urutkan_sequence_fill.js";
 
 const TOTAL_QUESTIONS = 20;
 const IDLE_LIMIT_MS = 5 * 60 * 1000;
@@ -35,14 +41,14 @@ const sfxWrong = new Audio("/assets/sounds/salah.mp3");
 const sfxClick = new Audio("/assets/sounds/click.mp3");
 const sfxBonus = new Audio("/assets/sounds/mp3.2.mp3");
 
-function tryAutoPlayBGM(){
-  // kalau user datang dari klik tombol bermain (udah unlock)
-  const unlocked = sessionStorage.getItem("bgmUnlocked") === "1";
-  if(!unlocked) return;
+// function tryAutoPlayBGM(){
+//   // kalau user datang dari klik tombol bermain (udah unlock)
+//   const unlocked = sessionStorage.getItem("bgmUnlocked") === "1";
+//   if(!unlocked) return;
 
-  // coba langsung play bgm
-  bgm.play().catch(()=>{});
-}
+//   // coba langsung play bgm
+//   bgm.play().catch(()=>{});
+// }
 
 
 function stopAllSounds(){
@@ -74,24 +80,11 @@ function playWrong(){
 
 /* ===== AUDIO UNLOCK (WAJIB) ===== */
 let audioUnlocked = false;
-function tryAutoPlayBGM(){
-  // kalau user datang dari klik tombol bermain (udah unlock)
-  const unlocked = sessionStorage.getItem("bgmUnlocked") === "1";
-  if(!unlocked) return;
-
-  // coba langsung play bgm
-  bgm.play().catch(()=>{});
-}
-
 
 function unlockAudio(){
   if(audioUnlocked) return;
   audioUnlocked = true;
-
-  // unlock browser + langsung mulai BGM
-  bgm.play().then(() => {
-    bgm.volume = 0.4;
-  }).catch(()=>{});
+  bgm.play().catch(()=>{});
 }
 
 
@@ -191,31 +184,57 @@ function showOverlay({title,text,img,primaryText,onPrimary}){
 }
 
 // ---------- RENDER QUESTION
+let currentAnswer = null;
+let rendererController = null; // optional: buat destroy kalau perlu
+
 function renderQuestion(){
-  const q=questions[index];
-  selected=null;
-  btnSubmit.disabled=false;
-  btnNext.disabled=true;
+  const q = questions[index];
+  document.body.classList.toggle("matchline-mode", q.type === "match_line_count_to_number");
 
-  questionTitle.textContent=q.prompt;
-  questionBox.innerHTML="";
+  currentAnswer = null;
+  btnSubmit.disabled = false;
+  btnNext.disabled = true;
 
-  q.options.forEach(opt=>{
-    const b=document.createElement("button");
-    b.className="choice";
-    b.textContent=opt;
-    b.onclick=()=>{
-      setLastAction();
-      sfxClick.play().catch(()=>{});
-      selected=opt;
-      [...questionBox.children].forEach(x=>x.classList.remove("selected"));
-      b.classList.add("selected");
-    };
-    questionBox.appendChild(b);
-  });
+  questionTitle.textContent = q.prompt;
+  questionBox.innerHTML = "";
+
+  if(rendererController && typeof rendererController.destroy === "function"){
+    rendererController.destroy();
+  }
+  rendererController = null;
+
+  if(q.type === "dragdrop_number_to_box"){
+    rendererController = renderDragDropNumberToBox({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+  } 
+  else if(q.type === "match_line_count_to_number"){
+    rendererController = renderMatchLineCountToNumber({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+  } 
+  else if(q.type === "urutkan_sequence_fill"){
+    rendererController = renderUrutkanSequenceFill({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+  }
+  else {
+    // fallback debug
+    questionBox.innerHTML = `<div style="padding:16px;font-weight:900">Tipe soal belum ada renderer: ${q.type}</div>`;
+  }
 
   updateTopbar();
+  setLastAction();
 }
+
+
+
 
 // ---------- DEMO QUESTIONS
 function generateQuestionsDemo(){
@@ -233,19 +252,46 @@ function generateQuestionsDemo(){
 
 // ---------- GAME FLOW
 function submitAnswer(){
-  const q=questions[index];
-  if(selected===null){
+  const q = questions[index];
+
+  // belum jawab apa-apa
+  if(currentAnswer === null){
     showOverlay({
-      title:"Pilih Jawaban 😊",
-      text:"Ayo pilih salah satu dulu ya",
-      img:"../../assets/image/robo.png",
+      title:"Belum selesai 😊",
+      text:"Kerjakan dulu ya (tarik garis / drag angka) lalu klik CEK.",
+      img:"/assets/image/robo.png",
       primaryText:"OK"
     });
     return;
   }
 
-  const correct=Number(selected)===Number(q.answer);
-  const overlayCard=document.querySelector(".overlay-card");
+  const overlayCard = document.querySelector(".overlay-card");
+  let correct = false;
+
+  // ===== CEK UNTUK VERSI 1 (dragdrop mengenal angka)
+  if(q.type === "dragdrop_number_to_box"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+
+  // ===== CEK UNTUK VERSI 2 (tarik garis)
+  if(q.type === "match_line_count_to_number"){
+    // currentAnswer = Map(leftId -> rightId)
+    // benar kalau semua kiri sudah terhubung (lengkap)
+    correct = currentAnswer instanceof Map && currentAnswer.size === q.data.left.length;
+
+    // kalau kamu mau "cek benar beneran", nanti kita upgrade (pakai correctMap)
+  }
+  // ===== CEK UNTUK VERSI 3 (urutkan)
+  if(q.type === "urutkan_sequence_fill"){
+    if(currentAnswer instanceof Map){
+      correct = q.data.blanks.every((idx) => {
+        const v = currentAnswer.get(idx);
+        return Number(v) === Number(q.data.sequence[idx]);
+      });
+    }else{
+      correct = false;
+    }
+  }
 
   if(correct){
     stars++;
@@ -258,29 +304,32 @@ function submitAnswer(){
       text:"Jawaban kamu benar!",
       img:"../../assets/image/bird1.gif",
       primaryText:"LANJUT",
-      onPrimary:()=>{
+      onPrimary:()=> {
         overlayCard.classList.remove("correct-pop");
         nextQuestion();
       }
     });
-  }else{
-    playWrong();
-    overlayCard.classList.add("wrong-shake");
 
-    showOverlay({
-      title:`<div class="wrong-emoji">❌</div> Coba Lagi 😊`,
-      text:"Tenang, kita ulang ya",
-      img:"../../assets/image/robo.png",
-      primaryText:"ULANG",
-      onPrimary:()=>{
-        overlayCard.classList.remove("wrong-shake");
-        renderQuestion();
-      }
-    });
+    updateTopbar();
+    return;
   }
 
-  updateTopbar();
+  // salah
+  playWrong();
+  overlayCard.classList.add("wrong-shake");
+
+  showOverlay({
+    title:`<div class="wrong-emoji">❌</div> Coba Lagi 😊`,
+    text:"Tenang, kita ulang ya",
+    img:"../../assets/image/robo.png",
+    primaryText:"ULANG",
+    onPrimary:()=> {
+      overlayCard.classList.remove("wrong-shake");
+      renderQuestion();
+    }
+  });
 }
+
 
 function nextQuestion(){
   if(index < TOTAL_QUESTIONS - 1){
@@ -320,6 +369,7 @@ function startIdleWatcher(){
 }
 
 // ---------- EVENTS
+window.addEventListener("pointerdown", unlockAudio, { once: true });
 btnSubmit.onclick = () => {
   unlockAudio();        // ⬅️ WAJIB
   submitAnswer();
@@ -394,15 +444,47 @@ function showGiftFeedback(){
   };
 }
 
+// function shuffle(arr){
+//   const a = arr.slice();
+//   for(let i=a.length-1;i>0;i--){
+//     const j = Math.floor(Math.random()*(i+1));
+//     [a[i],a[j]]=[a[j],a[i]];
+//   }
+//   return a;
+// }
+function generateBil20Mixed(){
+  const list = [];
+  const n1 = 7;
+  const n2 = 7;
+  const n3 = TOTAL_QUESTIONS - n1 - n2;
+
+  for(let i=0;i<n1;i++) list.push(genBil20_MengenalAngka());
+  for(let i=0;i<n2;i++) list.push(genBil20_TarikGaris());
+  for(let i=0;i<n3;i++) list.push(genBil20_Urutkan());
+
+  return shuffle(list); // pakai shuffle yang di HELPERS
+}
+
+// function generateBil20Mixed(){
+//   const list = [];
+//   for(let i=0;i<TOTAL_QUESTIONS;i++){
+//     const pick = Math.random() < 0.5 ? 1 : 2;
+//     list.push(pick === 1 ? genBil20_MengenalAngka() : genBil20_TarikGaris());
+//   }
+//   return list;
+// }
 
 
 // ---------- INIT
 function init(){
   buildDots();
-  questions = generateQuestionsDemo();
+
+  questions = generateBil20Mixed();   // ✅ 20 soal campuran
+  index = 0;
+  stars = 0;
+
+  updateTopbar();
   renderQuestion();
   startIdleWatcher();
-
-  tryAutoPlayBGM(); // ✅ mulai otomatis kalau sudah unlock dari halaman sebelumnya
 }
 init();
