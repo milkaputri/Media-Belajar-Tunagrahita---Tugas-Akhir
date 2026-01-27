@@ -7,6 +7,8 @@ import { genBil20_TarikGaris } from "../../js/content/domains/bilangan/bil20/var
 import { renderMatchLineCountToNumber } from "../../js/game/renderers/match_line_count_to_number.js";
 import { genBil20_Urutkan } from "../../js/content/domains/bilangan/bil20/variants/urutkan.js";
 import { renderUrutkanSequenceFill } from "../../js/game/renderers/urutkan_sequence_fill.js";
+import { genBil50_HitungObjek } from "../../js/content/domains/bilangan/bil50/variants/hitungObjek.js";
+import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 
 const TOTAL_QUESTIONS = 20;
 const IDLE_LIMIT_MS = 5 * 60 * 1000;
@@ -179,12 +181,24 @@ let rendererController = null; // optional: buat destroy kalau perlu
 function renderQuestion(){
   const q = questions[index];
   document.body.classList.toggle("matchline-mode", q.type === "match_line_count_to_number");
+  document.body.classList.toggle("countobj-mode", q.type === "count_objects_pick_number");
 
   currentAnswer = null;
   btnSubmit.disabled = false;
   btnNext.disabled = true;
 
-  questionTitle.textContent = q.prompt;
+  if(q.type === "count_objects_pick_number"){
+    const targetEmoji = q.data.targetEmoji || "⭐";
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">
+        <span class="q-badge-num">${q.data.targetCount}</span>
+        <span class="q-badge-emoji">${targetEmoji}</span>
+      </span>
+    `;
+  }else{
+    questionTitle.textContent = q.prompt;
+  }
   questionBox.innerHTML = "";
 
   if(rendererController && typeof rendererController.destroy === "function"){
@@ -208,6 +222,13 @@ function renderQuestion(){
   } 
   else if(q.type === "urutkan_sequence_fill"){
     rendererController = renderUrutkanSequenceFill({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+  }
+  else if(q.type === "count_objects_pick_number"){
+    rendererController = renderCountObjectsPickNumber({
       mount: questionBox,
       q,
       onAnswerChange: (v) => { currentAnswer = v; }
@@ -266,6 +287,9 @@ function submitAnswer(){
     }else{
       correct = false;
     }
+  }
+  if(q.type === "count_objects_pick_number"){
+    correct = Number(currentAnswer) === Number(q.answer);
   }
 
   if(correct){
@@ -423,13 +447,20 @@ function generateBil20Mixed(){
   return shuffle(list); // pakai shuffle yang di HELPERS
 }
 
+function generateBil50KumpulkanBintang(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genBil50_HitungObjek());
+  }
+  return shuffle(list);
+}
 
 
 // ---------- INIT
 function init(){
   buildDots();
 
-  questions = generateBil20Mixed();   // ✅ 20 soal campuran
+  questions = generateBil50KumpulkanBintang();
   index = 0;
   stars = 0;
 
