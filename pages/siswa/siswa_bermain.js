@@ -9,6 +9,8 @@ import { genBil20_Urutkan } from "../../js/content/domains/bilangan/bil20/varian
 import { renderUrutkanSequenceFill } from "../../js/game/renderers/urutkan_sequence_fill.js";
 import { genBil50_HitungObjek } from "../../js/content/domains/bilangan/bil50/variants/hitungObjek.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
+import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
+import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
 
 const TOTAL_QUESTIONS = 20;
 const IDLE_LIMIT_MS = 5 * 60 * 1000;
@@ -66,6 +68,46 @@ function playWrong(){
   sfxWrong.currentTime = 0;
   sfxWrong.play().catch(()=>{});
   sfxWrong.onended = () => bgm.play().catch(()=>{});
+}
+
+// ---------- SPEECH (INSTRUCTION)
+let cachedVoice = null;
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    cachedVoice = pickFemaleVoice();
+  };
+}
+
+function pickFemaleVoice() {
+  if (!window.speechSynthesis) return null;
+  const voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) return null;
+
+  const idVoices = voices.filter(v => (v.lang || "").toLowerCase().startsWith("id"));
+  const femaleHint = v => /female|perempuan|cewek|girl|wanita/i.test(v.name || "");
+
+  const idFemale = idVoices.find(femaleHint);
+  if (idFemale) return idFemale;
+
+  const idAny = idVoices[0];
+  if (idAny) return idAny;
+
+  const anyFemale = voices.find(femaleHint);
+  return anyFemale || voices[0];
+}
+
+function speakPrompt(text) {
+  if (!window.speechSynthesis) return;
+  try {
+    if (!cachedVoice) cachedVoice = pickFemaleVoice();
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "id-ID";
+    utter.voice = cachedVoice;
+    utter.rate = 0.95;
+    utter.pitch = 1.15;
+    window.speechSynthesis.speak(utter);
+  } catch {}
 }
 
 
@@ -178,13 +220,58 @@ function showOverlay({title,text,img,primaryText,onPrimary}){
 let currentAnswer = null;
 let rendererController = null; // optional: buat destroy kalau perlu
 
+function handleCorrectAnswer(){
+  const overlayCard = document.querySelector(".overlay-card");
+  stars++;
+  playCorrect();
+  launchConfetti();
+  overlayCard.classList.add("correct-pop");
+
+  showOverlay({
+    title:"HEBAT!",
+    text:"Jawaban kamu benar!",
+    img:"../../assets/image/bird1.gif",
+    primaryText:"LANJUT",
+    onPrimary:()=> {
+      overlayCard.classList.remove("correct-pop");
+      nextQuestion();
+    }
+  });
+
+  updateTopbar();
+}
+
+function handleWrongAnswer(message){
+  const overlayCard = document.querySelector(".overlay-card");
+  playWrong();
+  overlayCard.classList.add("wrong-shake");
+
+  showOverlay({
+    title:"Coba Lagi",
+    text: message || "Coba lagi ya",
+    img:"../../assets/image/robo.png",
+    primaryText:"ULANG",
+    onPrimary:()=> {
+      overlayCard.classList.remove("wrong-shake");
+      renderQuestion();
+    }
+  });
+}
+
 function renderQuestion(){
   const q = questions[index];
   document.body.classList.toggle("matchline-mode", q.type === "match_line_count_to_number");
   document.body.classList.toggle("countobj-mode", q.type === "count_objects_pick_number");
+  document.body.classList.toggle("balloon-mode", q.type === "catch_balloon_number");
+  document.body.classList.toggle("rain-mode", q.type === "catch_number_rain");
+  document.body.classList.toggle("tower-mode", q.type === "stack_number_tower");
+  document.body.classList.toggle("finger-mode", q.type === "finger_addition_pick");
+  document.body.classList.toggle("objadd-mode", q.type === "objects_addition_pick");
+  document.body.classList.toggle("pv-mode", q.type === "place_value_boxes");
+  document.body.classList.toggle("imgpv-mode", q.type === "image_place_value_pick");
 
   currentAnswer = null;
-  btnSubmit.disabled = false;
+  btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
   btnNext.disabled = true;
 
   if(q.type === "count_objects_pick_number"){
@@ -196,6 +283,25 @@ function renderQuestion(){
         <span class="q-badge-emoji">${targetEmoji}</span>
       </span>
     `;
+  }else if(q.type === "catch_balloon_number"){
+    questionTitle.innerHTML = `
+      <span class="q-text">Cari angka</span>
+      <span class="q-badge q-badge-balloon">
+        <span class="q-badge-num">${q.data.targetNumber}</span>
+      </span>
+    `;
+  }else if(q.type === "catch_number_rain"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "stack_number_tower"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "finger_addition_pick"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "objects_addition_pick"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "place_value_boxes"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "image_place_value_pick"){
+    questionTitle.textContent = q.prompt;
   }else{
     questionTitle.textContent = q.prompt;
   }
@@ -234,6 +340,30 @@ function renderQuestion(){
       onAnswerChange: (v) => { currentAnswer = v; }
     });
   }
+  else if(q.type === "stack_number_tower"){
+    rendererController = renderStackNumberTower({
+      mount: questionBox,
+      q,
+      onChange: (arr) => { currentAnswer = arr; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "objects_addition_pick"){
+    rendererController = renderObjectsAdditionPick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "image_place_value_pick"){
+    rendererController = renderImagePlaceValuePick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
   else {
     // fallback debug
     questionBox.innerHTML = `<div style="padding:16px;font-weight:900">Tipe soal belum ada renderer: ${q.type}</div>`;
@@ -251,7 +381,7 @@ function submitAnswer(){
   const q = questions[index];
 
   // belum jawab apa-apa
-  if(currentAnswer === null){
+  if(currentAnswer === null || (q.type === "stack_number_tower" && Array.isArray(currentAnswer) && currentAnswer.length === 0)){
     showOverlay({
       title:"Belum selesai 😊",
       text:"Kerjakan dulu ya (tarik garis / drag angka) lalu klik CEK.",
@@ -291,8 +421,35 @@ function submitAnswer(){
   if(q.type === "count_objects_pick_number"){
     correct = Number(currentAnswer) === Number(q.answer);
   }
+  if(q.type === "catch_balloon_number"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "stack_number_tower"){
+    const ans = Array.isArray(currentAnswer) ? currentAnswer : [];
+    const target = Array.isArray(q.answer) ? q.answer : [];
+    correct = ans.length === target.length && ans.every((v,i)=>Number(v)===Number(target[i]));
+  }
+  if(q.type === "finger_addition_pick"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "objects_addition_pick"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "place_value_boxes"){
+    const ans = Array.isArray(currentAnswer) ? currentAnswer : [];
+    const target = Array.isArray(q.answer) ? q.answer : [];
+    correct = ans.length === target.length && ans.every((v,i)=>Number(v)===Number(target[i]));
+  }
+  if(q.type === "image_place_value_pick"){
+    correct = String(currentAnswer) === String(q.answer);
+  }
 
   if(correct){
+    handleCorrectAnswer();
+    return;
+  }
+
+  if(false && correct){
     stars++;
     playCorrect();
     launchConfetti();
@@ -310,6 +467,17 @@ function submitAnswer(){
     });
 
     updateTopbar();
+    return;
+  }
+
+  if(q.type === "stack_number_tower"){
+    if(rendererController && typeof rendererController.fail === "function"){
+      rendererController.fail();
+    }
+    const order = q.data?.order || "asc";
+    handleWrongAnswer(order === "asc"
+      ? "Urutkan dari kecil ke besar ya"
+      : "Urutkan dari besar ke kecil ya");
     return;
   }
 
@@ -455,12 +623,20 @@ function generateBil50KumpulkanBintang(){
   return shuffle(list);
 }
 
+function generateBil100TangkapAngka(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genNilaiTempat_NilaiGambar());
+  }
+  return shuffle(list);
+}
+
 
 // ---------- INIT
 function init(){
   buildDots();
 
-  questions = generateBil50KumpulkanBintang();
+  questions = generateBil100TangkapAngka();
   index = 0;
   stars = 0;
 
