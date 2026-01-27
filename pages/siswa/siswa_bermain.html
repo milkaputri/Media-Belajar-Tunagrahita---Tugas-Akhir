@@ -5,40 +5,33 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Arena Bermain</title>
 
+  <link rel="stylesheet" href="../../assets/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="../../css/global.css" />
   <link rel="stylesheet" href="./siswa_bermain.css" />
 </head>
 
 <body>
   <main class="arena">
-
-    <!-- background dekor (optional) -->
     <img class="bg" src="../../assets/image/background2.jpg" alt="bg" />
 
-    <!-- TOP BAR -->
-    <header class="topbar">
-        <!-- kiri -->
-        <button id="btnBack" class="fab" aria-label="Kembali">
-            <span class="fab-ic">←</span>
-        </button>
+    <header class="topbar d-flex align-items-center justify-content-between gap-3">
+      <button id="btnBack" class="fab" aria-label="Kembali" type="button">
+        <span class="fab-ic">&#8592;</span>
+      </button>
 
-        <!-- tengah -->
-        <div class="progress-wrap" aria-label="Progress soal">
-            <div class="progress-text">
-            Soal <span id="stepNow">1</span> / <span id="stepTotal">20</span>
-            </div>
-
-            <div id="stepDots" class="stepper"></div>
+      <div class="progress-wrap" aria-label="Progress soal">
+        <div class="progress-text">
+          Soal <span id="stepNow">1</span> / <span id="stepTotal">20</span>
         </div>
+        <div id="stepDots" class="stepper"></div>
+      </div>
 
-        <!-- kanan -->
-        <div class="stars pill">
-            <span class="star-ic">⭐</span>
-            <span id="starCount">0</span>
-        </div>
+      <div class="stars pill">
+        <span class="star-ic">&#11088;</span>
+        <span id="starCount">0</span>
+      </div>
     </header>
 
-    <!-- QUESTION STAGE -->
     <section class="stage" id="stage">
       <h1 id="questionTitle" class="q-title">Siap bermain?</h1>
 
@@ -47,18 +40,11 @@
       </div>
 
       <div class="actions">
-        <button id="btnSubmit" class="btn primary">CEK</button>
-        <button id="btnNext" class="btn" disabled>LANJUT</button>
+        <button id="btnSubmit" class="btn btn-primary arena-btn" type="button">CEK</button>
+        <button id="btnNext" class="btn btn-secondary arena-btn" type="button" disabled>LANJUT</button>
       </div>
     </section>
 
-    <!-- SETTINGS BUTTON -->
-    <button id="btnSettings" class="fab fab-settings" aria-label="Pengaturan">
-  <!-- icon gear yg lebih mirip “settings” -->
-        <span class="fab-ic">⚙️</span>
-    </button>
-
-    <!-- OVERLAYS -->
     <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
       <div class="overlay-card">
         <img id="overlayImg" class="overlay-img" src="../../assets/image/robo.png" alt="" />
@@ -66,19 +52,16 @@
         <p id="overlayText" class="overlay-text">Isi</p>
 
         <div class="overlay-actions">
-          <button id="overlayPrimary" class="btn primary">OK</button>
-          <button id="overlaySecondary" class="btn hidden">BATAL</button>
+          <button id="overlayPrimary" class="btn btn-primary arena-btn-sm" type="button">OK</button>
+          <button id="overlaySecondary" class="btn btn-secondary arena-btn-sm hidden" type="button">BATAL</button>
         </div>
       </div>
     </div>
-
   </main>
 
-  <script src="/js/storage.js"></script>
-  <script src="/js/ui.js"></script>
-
-  <!-- JS khusus bermain -->
+  <script src="../../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/ui.js"></script>
   <script type="module" src="./siswa_bermain.js"></script>
-
 </body>
 </html>

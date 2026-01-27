@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-theme="light" data-text="md">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Media Belajar - Mari Belajar</title>
 
+  <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/home.css" />
   <link rel="stylesheet" href="css/modal.css" />
@@ -13,33 +14,27 @@
 <body>
 
   <!-- Background + layout -->
-  <main class="screen">
-
+  <main class="screen d-flex align-items-center justify-content-center position-relative">
 
     <!-- top left menu -->
-    <button class="icon-btn top-left" id="menuBtn" aria-label="Menu">
-      ☰
+    <button class="btn btn-primary app-icon-btn position-fixed top-0 start-0 m-3" id="menuBtn" aria-label="Menu">
+      &#9776;
     </button>
 
-
     <!-- top right avatar -->
-    <div class="avatar top-right" aria-label="Profil">
+    <div class="avatar position-fixed top-0 end-0 m-3" aria-label="Profil">
       <img src="assets/image/logo.png" alt="Logo Aplikasi" />
     </div>
 
     <!-- center content -->
-    <section class="center">
+    <section class="center text-center">
       <h1 class="title">MARI BELAJAR</h1>
       <p class="subtitle">Tekan MULAI untuk melanjutkan belajar</p>
 
-      <button class="btn-primary big wiggle" id="btnMulai">
+      <button class="btn btn-primary app-btn app-btn-xl wiggle" id="btnMulai">
         MULAI
       </button>
-
     </section>
-
-    <!-- bottom green hill
-    <div class="hill"></div> -->
 
     <!-- character placeholder -->
     <div class="character" aria-hidden="true">
@@ -49,12 +44,12 @@
     <!-- bubble message -->
     <div class="bubble">
       <div class="bubble-title">HALO!</div>
-      <div class="bubble-text">Ayo mulai pelan pelan 🙂</div>
+      <div class="bubble-text">Ayo mulai pelan pelan &#128578;</div>
     </div>
 
     <!-- bottom right settings -->
-    <button class="icon-btn bottom-right" id="settingsBtn" aria-label="Pengaturan">
-      ⚙
+    <button class="btn btn-primary app-icon-btn position-fixed bottom-0 end-0 m-3" id="settingsBtn" aria-label="Pengaturan">
+      &#9881;
     </button>
 
   </main>
@@ -63,230 +58,245 @@
   <aside class="sidebar" id="sidebar" aria-hidden="true">
     <div class="sidebar-head">
       <div class="sidebar-title">MENU</div>
-      <button class="sidebar-close" id="sidebarClose">✕</button>
+      <button class="sidebar-close" id="sidebarClose" type="button">&#10006;</button>
     </div>
 
     <nav class="sidebar-nav">
-      <button class="nav-item active" data-nav="home">🏠 Halaman utama</button>
-      <button class="nav-item" data-nav="profile">👤 Profile</button>
-      <button class="nav-item" data-nav="about">ℹ️ Tentang</button>
+      <button class="side-item active" data-nav="home" type="button">&#127968; Halaman utama</button>
+      <button class="side-item" data-nav="profile" type="button">&#128100; Profile</button>
+      <button class="side-item" data-nav="about" type="button">&#8505; Tentang</button>
     </nav>
   </aside>
 
-<!-- overlay saat sidebar dibuka -->
-<div class="overlay" id="overlay" aria-hidden="true"></div>
+  <!-- overlay saat sidebar dibuka -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-<!-- MODAL SETTINGS -->
-<section class="modal" id="modalSettings" aria-hidden="true">
-  <div class="modal-card">
-    <button class="modal-close" data-close="modalSettings">✕</button>
-    <h2 class="modal-title">PENGATURAN</h2>
+  <!-- MODAL SETTINGS -->
+  <section class="modal fade app-modal" id="modalSettings" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">PENGATURAN</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="setting-row d-flex align-items-center justify-content-between gap-2">
+            <div class="setting-label">Ukuran teks</div>
+            <div class="btn-group segmented" role="group" aria-label="Ukuran teks">
+              <button class="btn btn-outline-primary seg-btn" data-textsize="sm" type="button">A</button>
+              <button class="btn btn-outline-primary seg-btn" data-textsize="md" type="button">A</button>
+              <button class="btn btn-outline-primary seg-btn" data-textsize="lg" type="button">A</button>
+            </div>
+          </div>
 
-    <!-- Ukuran teks -->
-    <div class="setting-row">
-      <div class="setting-label">Ukuran teks</div>
-      <div class="segmented">
-        <button class="seg-btn" data-textsize="sm">A</button>
-        <button class="seg-btn" data-textsize="md">A</button>
-        <button class="seg-btn" data-textsize="lg">A</button>
+          <div class="setting-row d-flex align-items-center justify-content-between gap-2">
+            <div class="setting-label">Tema</div>
+            <div class="btn-group toggle" role="group" aria-label="Tema">
+              <button class="btn btn-outline-primary toggle-btn" data-theme="light" type="button">&#127774; Terang</button>
+              <button class="btn btn-outline-primary toggle-btn" data-theme="dark" type="button">&#127769; Gelap</button>
+            </div>
+          </div>
+
+          <div class="setting-row d-flex align-items-center justify-content-between gap-2">
+            <div class="setting-label">Music</div>
+            <button class="btn btn-outline-secondary sound-btn" id="soundBtn" type="button">&#128266;</button>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- Tema -->
-    <div class="setting-row">
-      <div class="setting-label">Tema</div>
-      <div class="toggle">
-        <button class="toggle-btn" data-theme="light">🌞 Terang</button>
-        <button class="toggle-btn" data-theme="dark">🌙 Gelap</button>
+  <!-- PANEL KONTEN (dummy) -->
+  <section class="modal fade app-modal" id="panelProfile" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title">Profile</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <p class="big-p mb-0">Ini halaman profile (contoh). Nanti bisa kamu isi data siswa/guru.</p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- Music -->
-    <div class="setting-row">
-      <div class="setting-label">Music</div>
-      <button class="sound-btn" id="soundBtn">🔊</button>
+  <section class="modal fade app-modal" id="panelAbout" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title">Tentang</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <p class="big-p mb-0">
+            Media belajar matematika berbasis web untuk anak tunagrahita (fokus UI/UX &amp; usability).
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- audio (opsional) -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/sounds/mp3.1.mp3" type="audio/mpeg">
+  </audio>
 
-<!-- PANEL KONTEN (dummy) -->
-<section class="panel card" id="panelProfile" aria-hidden="true">
-  <div class="panel-head">
-    <h2>Profile</h2>
-    <button class="panel-close" data-closepanel="panelProfile">✕</button>
-  </div>
-  <p class="big-p">Ini halaman profile (contoh). Nanti bisa kamu isi data siswa/guru.</p>
-</section>
-
-<section class="panel card" id="panelAbout" aria-hidden="true">
-  <div class="panel-head">
-    <h2>Tentang</h2>
-    <button class="panel-close" data-closepanel="panelAbout">✕</button>
-  </div>
-  <p class="big-p">
-    Media belajar matematika berbasis web untuk anak tunagrahita (fokus UI/UX & usability).
-  </p>
-</section>
-
-<!-- audio (opsional) -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="assets/sounds/mp3.1.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="sfxClick" preload="auto">
-  <source src="assets/sounds/click.mp3" type="audio/mpeg">
-</audio>
+  <audio id="sfxClick" preload="auto">
+    <source src="assets/sounds/click.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- ============ MODALS ============ -->
+  <section class="modal fade app-modal" id="modalRole" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">SIAPA KAMU?</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="role-grid">
+            <button class="btn btn-primary role-card" id="chooseSiswa" type="button">
+              <div class="role-illu">
+                <img src="assets/image/siswa.png" alt="Gambar Siswa">
+              </div>
+              <div class="role-label">SISWA</div>
+            </button>
 
-  <!-- ROLE MODAL -->
-  <section class="modal" id="modalRole" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close="modalRole" aria-label="Tutup">✕</button>
-      <h2 class="modal-title">SIAPA KAMU?</h2>
-
-      <div class="role-grid">
-        <button class="role-card" id="chooseSiswa">
-          <div class="role-illu">
-            <img src="assets/image/siswa.png" alt="Gambar Siswa">
+            <button class="btn btn-primary role-card" id="chooseGuru" type="button">
+              <div class="role-illu">
+                <img src="assets/image/guru.png" alt="Gambar Guru">
+              </div>
+              <div class="role-label">GURU</div>
+            </button>
           </div>
-          <div class="role-label">SISWA</div>
-        </button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <button class="role-card" id="chooseGuru">
-          <div class="role-illu">
-            <img src="assets/image/guru.png" alt="Gambar Guru">
+  <section class="modal fade app-modal" id="modalLoginGuru" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">AKUN</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="app-form">
+            <label class="form-label">NAMA AKUN</label>
+            <input class="form-control form-control-lg" id="guruNama" placeholder="Masukkan Nama Akun Anda" />
+
+            <label class="form-label">KATA SANDI</label>
+            <input class="form-control form-control-lg" id="guruPass" type="password" placeholder="Masukkan Kata Sandi Anda" />
+
+            <button class="btn btn-primary w-100 app-btn" id="btnLoginGuru" type="button">MASUK</button>
+
+            <p class="form-foot">
+              Belum ada akun?
+              <button class="btn btn-link link" id="toDaftarGuru" type="button">DAFTAR</button>
+            </p>
           </div>
-          <div class="role-label">GURU</div>
-        </button>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- LOGIN GURU -->
-  <section class="modal" id="modalLoginGuru" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close="modalLoginGuru" aria-label="Tutup">✕</button>
-      <h2 class="modal-title">AKUN</h2>
+  <section class="modal fade app-modal" id="modalDaftarGuru" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">BUAT AKUN</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="app-form">
+            <label class="form-label">NAMA AKUN</label>
+            <input class="form-control form-control-lg" id="guruNamaDaftar" placeholder="Masukkan Nama Akun Anda" />
 
-      <div class="form-box">
-        <label class="label">NAMA AKUN</label>
-        <input class="input" id="guruNama" placeholder="Masukan Nama Akun Anda" />
+            <label class="form-label">KATA SANDI</label>
+            <input class="form-control form-control-lg" id="guruPassDaftar" type="password" placeholder="Masukkan Kata Sandi Anda" />
 
-        <label class="label">KATA SANDI</label>
-        <input class="input" id="guruPass" type="password" placeholder="Masukan Kata Sandi Anda" />
+            <label class="form-label">NAMA SEKOLAH</label>
+            <select class="form-select form-select-lg" name="sekolah">
+              <option value="slb1">Pilih Sekolah Anda</option>
+              <option value="slb2">SLB Pamardi Putra</option>
+              <option value="slb3">SLBN 1 Yogyakarta</option>
+            </select>
 
-        <button class="btn-primary" id="btnLoginGuru">MASUK</button>
+            <button class="btn btn-primary w-100 app-btn" id="btnDaftarGuru" type="button">DAFTAR</button>
 
-        <p class="form-foot">
-          Belum ada akun??
-          <button class="link" id="toDaftarGuru">DAFTAR</button>
-        </p>
-
-
+            <p class="form-foot">
+              Sudah ada akun?
+              <button class="btn btn-link link" id="toLoginGuru" type="button">MASUK</button>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- DAFTAR GURU -->
-  <section class="modal" id="modalDaftarGuru" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close="modalDaftarGuru" aria-label="Tutup">✕</button>
-      <h2 class="modal-title">BUAT AKUN</h2>
+  <section class="modal fade app-modal" id="modalLoginSiswa" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">AKUN</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="app-form">
+            <label class="form-label">NAMA DEPAN</label>
+            <input class="form-control form-control-lg" id="siswaDepan" placeholder="Masukkan Nama Depan Anda" />
 
-      <div class="form-box">
-        <label class="label">NAMA AKUN</label>
-        <input class="input" id="guruNamaDaftar" placeholder="Masukan Nama Akun Anda" />
+            <label class="form-label">NAMA SEKOLAH</label>
+            <select class="form-select form-select-lg" name="sekolah">
+              <option value="slb1">Pilih Sekolah Anda</option>
+              <option value="slb2">SLB Pamardi Putra</option>
+              <option value="slb3">SLBN 1 Yogyakarta</option>
+            </select>
 
-        <label class="label">KATA SANDI</label>
-        <input class="input" id="guruPassDaftar" type="password" placeholder="Masukan Kata Sandi Anda" />
-        
-        <label class="label">NAMA SEKOLAH</label> 
-        <select name="sekolah"> 
-          <option value="slb1">Pilih Sekolah Anda</option> 
-          <option value="slb2">SLB Pamardi Putra</option> 
-          <option value="slb3">SLBN 1 Yogyakarta</option> 
-        </select>
+            <button class="btn btn-primary w-100 app-btn" id="btnLoginSiswa" type="button">MASUK</button>
 
-        <button class="btn-primary" id="btnDaftarGuru">DAFTAR</button>
-
-        <p class="form-foot">
-          Sudah ada akun??
-          <button class="link" id="toLoginGuru">MASUK</button>
-        </p>
+            <p class="form-foot">
+              Belum ada akun?
+              <button class="btn btn-link link" id="toDaftarSiswa" type="button">DAFTAR</button>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- LOGIN SISWA -->
-  <section class="modal" id="modalLoginSiswa" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close="modalLoginSiswa" aria-label="Tutup">✕</button>
-      <h2 class="modal-title">AKUN</h2>
+  <section class="modal fade app-modal" id="modalDaftarSiswa" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">BUAT AKUN</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="app-form">
+            <label class="form-label">NAMA DEPAN</label>
+            <input class="form-control form-control-lg" id="siswaDepanDaftar" placeholder="Masukkan Nama Depan Anda" />
 
-      <div class="form-box">
-        <label class="label">NAMA DEPAN</label>
-        <input class="input" id="siswaDepan" placeholder="Masukan Nama Depan Anda" />
+            <label class="form-label">NAMA BELAKANG</label>
+            <input class="form-control form-control-lg" id="siswaBelakangDaftar" placeholder="Masukkan Nama Belakang Anda" />
 
-        <!-- <label class="label">NAMA BELAKANG</label>
-        <input class="input" id="siswaBelakang" placeholder="Masukan Nama Belakang Anda" /> -->
+            <button class="btn btn-primary w-100 app-btn" id="btnDaftarSiswa" type="button">DAFTAR</button>
 
-        <label class="label">NAMA SEKOLAH</label> 
-        <select name="sekolah"> 
-          <option value="slb1">Pilih Sekolah Anda</option> 
-          <option value="slb2">SLB Pamardi Putra</option> 
-          <option value="slb3">SLBN 1 Yogyakarta</option> 
-        </select>
-
-        <button class="btn-primary" id="btnLoginSiswa">MASUK</button>
-
-        <p class="form-foot">
-          Belum ada akun??
-          <button class="link" id="toDaftarSiswa">DAFTAR</button>
-        </p>
+            <p class="form-foot">
+              Sudah ada akun?
+              <button class="btn btn-link link" id="toLoginSiswa" type="button">MASUK</button>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- DAFTAR SISWA -->
-  <section class="modal" id="modalDaftarSiswa" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close="modalDaftarSiswa" aria-label="Tutup">✕</button>
-      <h2 class="modal-title">BUAT AKUN</h2>
+  <div id="toast" aria-live="polite"></div>
 
-      <div class="form-box">
-        <label class="label">NAMA DEPAN</label>
-        <input class="input" id="siswaDepanDaftar" placeholder="Masukan Nama Depan Anda" />
-
-        <label class="label">NAMA BELAKANG</label>
-        <input class="input" id="siswaBelakangDaftar" placeholder="Masukan Nama Belakang Anda" />
-
-        <button class="btn-primary" id="btnDaftarSiswa">DAFTAR</button>
-
-        <p class="form-foot">
-          Sudah ada akun??
-          <button class="link" id="toLoginSiswa">MASUK</button>
-        </p>
-      </div>
-    </div>
-  </section>
-
-    <!-- BURUNG TERBANG -->
-  <!-- <div class="birds">
-    <div class="birds">
-      <img src="assets/image/bird1.gif" class="bird fly-lr b1" alt="">
-      <img src="assets/image/bird2.gif" class="bird fly-rl b2" alt="">
-      <img src="assets/image/bird3.gif" class="bird fly-bt b3" alt="">
-    </div>
-
-
-  </div> -->
-
-
-  <!-- toast message -->
-  <div class="toast" id="toast" aria-live="polite"></div>
-
+  <script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>

@@ -13,7 +13,6 @@ const IDLE_LIMIT_MS = 5 * 60 * 1000;
 
 // ---------- ELEMENTS
 const btnBack = document.getElementById("btnBack");
-const btnSettings = document.getElementById("btnSettings");
 const stepNowEl = document.getElementById("stepNow");
 const stepTotalEl = document.getElementById("stepTotal");
 const stepDots = document.getElementById("stepDots");
@@ -32,24 +31,14 @@ const overlayPrimary = document.getElementById("overlayPrimary");
 const overlaySecondary = document.getElementById("overlaySecondary");
 
 // ---------- AUDIO CONTROLLER
-const bgm = new Audio("/assets/sounds/mp3.1.mp3");
+const bgm = new Audio("../../assets/sounds/mp3.1.mp3");
 bgm.loop = true;
 bgm.volume = 0.4;
 
-const sfxCorrect = new Audio("/assets/sounds/benar.mp3");
-const sfxWrong = new Audio("/assets/sounds/salah.mp3");
-const sfxClick = new Audio("/assets/sounds/click.mp3");
-const sfxBonus = new Audio("/assets/sounds/mp3.2.mp3");
-
-// function tryAutoPlayBGM(){
-//   // kalau user datang dari klik tombol bermain (udah unlock)
-//   const unlocked = sessionStorage.getItem("bgmUnlocked") === "1";
-//   if(!unlocked) return;
-
-//   // coba langsung play bgm
-//   bgm.play().catch(()=>{});
-// }
-
+const sfxCorrect = new Audio("../../assets/sounds/benar.mp3");
+const sfxWrong = new Audio("../../assets/sounds/salah.mp3");
+const sfxClick = new Audio("../../assets/sounds/click.mp3");
+const sfxBonus = new Audio("../../assets/sounds/mp3.2.mp3");
 
 function stopAllSounds(){
   [bgm, sfxCorrect, sfxWrong, sfxClick, sfxBonus].forEach(a=>{
@@ -236,20 +225,6 @@ function renderQuestion(){
 
 
 
-// ---------- DEMO QUESTIONS
-function generateQuestionsDemo(){
-  const base=[];
-  for(let i=0;i<TOTAL_QUESTIONS;i++){
-    const ans=Math.floor(Math.random()*20)+1;
-    base.push({
-      prompt:`Pilih angka ${ans}`,
-      options:shuffle([ans,ans+1,ans-1,Math.floor(Math.random()*20)+1]),
-      answer:ans
-    });
-  }
-  return base;
-}
-
 // ---------- GAME FLOW
 function submitAnswer(){
   const q = questions[index];
@@ -259,7 +234,7 @@ function submitAnswer(){
     showOverlay({
       title:"Belum selesai 😊",
       text:"Kerjakan dulu ya (tarik garis / drag angka) lalu klik CEK.",
-      img:"/assets/image/robo.png",
+      img:"../../assets/image/robo.png",
       primaryText:"OK"
     });
     return;
@@ -385,15 +360,6 @@ btnBack.onclick = () => {
   location.href = "./siswa_home.html";
 };
 
-btnSettings.onclick = () => {
-  unlockAudio();
-  showOverlay({
-    title:"Pengaturan ⚙",
-    text:"Versi awal",
-    img:"../../assets/image/robo.png",
-    primaryText:"TUTUP"
-  });
-};
 function showBonusStars(){
   // pakai overlay yang sudah ada
   overlayTitle.textContent = "BONUS! 🎉";
@@ -444,14 +410,6 @@ function showGiftFeedback(){
   };
 }
 
-// function shuffle(arr){
-//   const a = arr.slice();
-//   for(let i=a.length-1;i>0;i--){
-//     const j = Math.floor(Math.random()*(i+1));
-//     [a[i],a[j]]=[a[j],a[i]];
-//   }
-//   return a;
-// }
 function generateBil20Mixed(){
   const list = [];
   const n1 = 7;
@@ -465,14 +423,6 @@ function generateBil20Mixed(){
   return shuffle(list); // pakai shuffle yang di HELPERS
 }
 
-// function generateBil20Mixed(){
-//   const list = [];
-//   for(let i=0;i<TOTAL_QUESTIONS;i++){
-//     const pick = Math.random() < 0.5 ? 1 : 2;
-//     list.push(pick === 1 ? genBil20_MengenalAngka() : genBil20_TarikGaris());
-//   }
-//   return list;
-// }
 
 
 // ---------- INIT
