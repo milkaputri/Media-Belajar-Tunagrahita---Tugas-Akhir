@@ -21,16 +21,34 @@ export function renderUrutkanSequenceFill({ mount, q, onAnswerChange }){
     });
   }
 
+  function clearSlot(index){
+    if(!slots.has(index)) return;
+    const prev = slots.get(index);
+    slots.delete(index);
+
+    const prevBtn = optionButtons.get(prev);
+    if(prevBtn){
+      prevBtn.disabled = false;
+      prevBtn.classList.remove("used");
+    }
+
+    const slotEl = grid.querySelector(`[data-slot="${index}"]`);
+    if(slotEl){
+      slotEl.textContent = "";
+      slotEl.classList.remove("filled");
+      slotEl.style.removeProperty("--seq-fill-bg");
+      slotEl.style.borderColor = "";
+    }
+
+    const complete = slots.size === q.data.blanks.length;
+    onAnswerChange(complete ? new Map(slots) : null);
+  }
+
   function setSlot(index, value){
     // jika nilai sudah dipakai di slot lain, kosongkan dulu
     for(const [idx, val] of slots.entries()){
       if(Number(val) === Number(value) && idx !== index){
-        slots.delete(idx);
-        const slotEl = grid.querySelector(`[data-slot="${idx}"]`);
-        if(slotEl){
-          slotEl.textContent = "";
-          slotEl.classList.remove("filled");
-        }
+        clearSlot(idx);
       }
     }
 
@@ -72,6 +90,7 @@ export function renderUrutkanSequenceFill({ mount, q, onAnswerChange }){
       const slot = document.createElement("div");
       slot.className = "seq-slot";
       slot.dataset.slot = String(i);
+      slot.draggable = true;
 
       slot.addEventListener("dragover", (e)=>{ e.preventDefault(); slot.classList.add("over"); });
       slot.addEventListener("dragleave", ()=>slot.classList.remove("over"));
@@ -86,7 +105,23 @@ export function renderUrutkanSequenceFill({ mount, q, onAnswerChange }){
         if(selected !== null){
           setSlot(i, Number(selected));
           setSelected(null);
+          return;
         }
+        if(slots.has(i)){
+          const v = slots.get(i);
+          clearSlot(i);
+          setSelected(v);
+        }
+      });
+
+      slot.addEventListener("dragstart", (e) => {
+        if(!slots.has(i)){
+          e.preventDefault();
+          return;
+        }
+        const v = slots.get(i);
+        e.dataTransfer.setData("text/plain", String(v));
+        clearSlot(i);
       });
 
       grid.appendChild(slot);

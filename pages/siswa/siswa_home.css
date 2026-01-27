@@ -2,25 +2,17 @@
 .siswa-screen{
   width: 100vw;
   height: 100vh;
-
   background-image: url("../../assets/image/background2.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   position: relative;
   overflow: hidden;
+  padding: 0 18px;
 }
 
-/* kanan atas: avatar + halo */
 .top-right-wrap{
-  position: absolute;
-  top: 16px;
-  right: 18px;
   z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .top-right-wrap .avatar{
@@ -36,7 +28,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 16px; /* radius avatar */
+  border-radius: 16px;
 }
 
 .hello{
@@ -65,31 +57,11 @@
   text-overflow: ellipsis;
 }
 
-/* tengah */
-.siswa-screen{
-  width: 100vw;
-  height: 100vh;
-
-  background-image: url("../../assets/image/background2.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  justify-content: center;   /* center vertikal */
-  align-items: center;       /* center horizontal */
-  position: relative;
-  overflow: hidden;
-
-  padding: 0 18px; /* biar aman di HP */
-}
-
 .siswa-center{
   text-align: center;
   width: 100%;
   max-width: 900px;
 }
-
 
 .siswa-title{
   margin: 0 0 24px;
@@ -98,14 +70,9 @@
   color: #1b2a3a;
 }
 
-/* 2 panel tombol */
 .panel-grid{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 25px;
   width: min(720px, 92vw);
   margin-inline: auto;
-  min-height: var(--tap);
 }
 
 .panel-btn{
@@ -137,48 +104,7 @@
   font-size: 34px;
 }
 
-/* robot + bubble (pakai dari home kamu, tapi aman di HP) */
-/* .character{
-  position: absolute;
-  left: 16px;
-  bottom: 92px;
-  width: 96px;
-  height: 96px;
-  z-index: 2;
-}
-.character img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-} */
-
-/* .bubble{
-  position: absolute;
-  left: calc(16px + 96px + 12px);
-  bottom: 104px;
-  background: #fff;
-  padding: 10px 14px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  z-index: 2;
-
-  width: min(260px, calc(100vw - (16px + 96px + 24px)));
-} */
-
-/* tombol menu & settings harus paling atas */
-.icon-btn{
-  z-index: 9999;
-  position: fixed;   /* biar konsisten */
-}
-
-
 @media (max-width: 480px){
   .siswa-title{ font-size: 44px; }
-
-  .panel-grid{
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
   .panel-btn{ max-width: 360px; }
 }

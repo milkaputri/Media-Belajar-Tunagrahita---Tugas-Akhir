@@ -5,24 +5,22 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Halaman Utama Siswa</title>
 
-  <!-- CSS yang sudah kamu punya -->
-  <link rel="stylesheet" href="/css/global.css" />
-  <link rel="stylesheet" href="/css/modal.css" />
-  <link rel="stylesheet" href="/css/sidebar.css" />
-
-  <!-- CSS khusus halaman siswa -->
+  <link rel="stylesheet" href="../../assets/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet" href="../../css/modal.css" />
+  <link rel="stylesheet" href="../../css/sidebar.css" />
   <link rel="stylesheet" href="siswa_home.css" />
 </head>
 <body>
 
-  <main class="screen siswa-screen">
-    <!-- MENU kiri atas -->
-    <button class="icon-btn top-left" id="menuBtn" aria-label="Menu">☰</button>
+  <main class="screen siswa-screen d-flex align-items-center justify-content-center position-relative">
+    <button class="btn btn-primary app-icon-btn position-fixed top-0 start-0 m-3" id="menuBtn" aria-label="Menu">
+      &#9776;
+    </button>
 
-    <!-- KANAN ATAS: avatar + HALO, nama -->
-    <div class="top-right-wrap" aria-label="Profil siswa">
+    <div class="top-right-wrap position-fixed top-0 end-0 m-3 d-flex align-items-center gap-2" aria-label="Profil siswa">
       <div class="avatar" aria-hidden="true">
-        <img src="/assets/image/logo.png" alt="Avatar" />
+        <img src="../../assets/image/logo.png" alt="Avatar" />
       </div>
       <div class="hello">
         <div class="hello-small">HALO,</div>
@@ -30,117 +28,120 @@
       </div>
     </div>
 
-    <!-- KONTEN TENGAH -->
-    <section class="siswa-center">
+    <section class="siswa-center text-center">
       <h1 class="siswa-title">PILIH MENU</h1>
-      <div class="panel-grid">
-        <button class="panel-btn" id="btnBelajar" type="button">
-          <div class="panel-emoji">📘</div>
-          <div class="panel-text">BELAJAR</div>
-        </button>
-
-        <button class="panel-btn" id="btnBermain" type="button">
-          <div class="panel-emoji">🎮</div>
-          <div class="panel-text">BERMAIN</div>
-        </button>
+      <div class="row g-4 justify-content-center panel-grid">
+        <div class="col-12 col-md-6">
+          <button class="panel-btn btn btn-primary w-100" id="btnBelajar" type="button">
+            <div class="panel-emoji">&#128214;</div>
+            <div class="panel-text">BELAJAR</div>
+          </button>
+        </div>
+        <div class="col-12 col-md-6">
+          <button class="panel-btn btn btn-primary w-100" id="btnBermain" type="button">
+            <div class="panel-emoji">&#127918;</div>
+            <div class="panel-text">BERMAIN</div>
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- ROBOT + BUBBLE
-    <div class="character" aria-hidden="true">
-      <img src="/assets/image/robo.png" alt="" />
-    </div>
-
-    <div class="bubble" aria-hidden="true">
-      <div class="bubble-title">HALO!</div>
-      <div class="bubble-text">Pilih BELAJAR atau BERMAIN ya 🙂</div>
-    </div> -->
-
-    <!-- SETTINGS kanan bawah -->
-    <button class="icon-btn bottom-right" id="settingsBtn" aria-label="Pengaturan">⚙</button>
+    <button class="btn btn-primary app-icon-btn position-fixed bottom-0 end-0 m-3" id="settingsBtn" aria-label="Pengaturan">
+      &#9881;
+    </button>
   </main>
 
-  <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar" aria-hidden="true">
-        <div class="sidebar-head">
-        <div class="sidebar-title">MENU</div>
-        <button class="sidebar-close" id="sidebarClose">✕</button>
-        </div>
+  <aside class="sidebar" id="sidebar" aria-hidden="true">
+    <div class="sidebar-head">
+      <div class="sidebar-title">MENU</div>
+      <button class="sidebar-close" id="sidebarClose" type="button">&#10006;</button>
+    </div>
 
     <nav class="sidebar-nav">
-      <button class="nav-item active" data-nav="home">🏠 Halaman utama</button>
-      <button class="nav-item" data-nav="profile">👤 Profile</button>
-      <button class="nav-item" data-nav="about">ℹ️ Tentang</button>
-      <button class="nav-item" data-nav="keluar">🚪 Keluar</button>
+      <button class="side-item active" data-nav="home" type="button">&#127968; Halaman utama</button>
+      <button class="side-item" data-nav="profile" type="button">&#128100; Profile</button>
+      <button class="side-item" data-nav="about" type="button">&#8505; Tentang</button>
+      <button class="side-item" data-nav="keluar" type="button">&#128682; Keluar</button>
     </nav>
   </aside>
 
-  <!-- OVERLAY -->
   <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-  <!-- MODAL SETTINGS (pakai yang sama persis id-nya) -->
-  <section class="modal" id="modalSettings" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close="modalSettings">✕</button>
-      <h2 class="modal-title">PENGATURAN</h2>
+  <section class="modal fade app-modal" id="modalSettings" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title w-100 text-center">PENGATURAN</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <div class="setting-row d-flex align-items-center justify-content-between gap-2">
+            <div class="setting-label">Ukuran teks</div>
+            <div class="btn-group segmented" role="group" aria-label="Ukuran teks">
+              <button class="btn btn-outline-primary seg-btn" data-textsize="sm" type="button">A</button>
+              <button class="btn btn-outline-primary seg-btn" data-textsize="md" type="button">A</button>
+              <button class="btn btn-outline-primary seg-btn" data-textsize="lg" type="button">A</button>
+            </div>
+          </div>
 
-      <div class="setting-row">
-        <div class="setting-label">Ukuran teks</div>
-        <div class="segmented">
-          <button class="seg-btn" data-textsize="sm">A</button>
-          <button class="seg-btn" data-textsize="md">A</button>
-          <button class="seg-btn" data-textsize="lg">A</button>
+          <div class="setting-row d-flex align-items-center justify-content-between gap-2">
+            <div class="setting-label">Tema</div>
+            <div class="btn-group toggle" role="group" aria-label="Tema">
+              <button class="btn btn-outline-primary toggle-btn" data-theme="light" type="button">&#127774; Terang</button>
+              <button class="btn btn-outline-primary toggle-btn" data-theme="dark" type="button">&#127769; Gelap</button>
+            </div>
+          </div>
+
+          <div class="setting-row d-flex align-items-center justify-content-between gap-2">
+            <div class="setting-label">Music</div>
+            <button class="btn btn-outline-secondary sound-btn" id="soundBtn" type="button">&#128266;</button>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="setting-row">
-        <div class="setting-label">Tema</div>
-        <div class="toggle">
-          <button class="toggle-btn" data-theme="light">🌞 Terang</button>
-          <button class="toggle-btn" data-theme="dark">🌙 Gelap</button>
+  <section class="modal fade app-modal" id="panelProfile" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title">Profile</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <p class="big-p mb-0">Ini halaman profile siswa (contoh).</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="setting-row">
-        <div class="setting-label">Music</div>
-        <button class="sound-btn" id="soundBtn">🔊</button>
+  <section class="modal fade app-modal" id="panelAbout" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title">Tentang</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <p class="big-p mb-0">Media belajar matematika untuk anak tunagrahita.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- PANEL (opsional, kalau kamu mau tetap punya profile/tentang popup) -->
-  <section class="panel card" id="panelProfile" aria-hidden="true">
-    <div class="panel-head">
-      <h2>Profile</h2>
-      <button class="panel-close" data-closepanel="panelProfile">✕</button>
-    </div>
-    <p class="big-p">Ini halaman profile siswa (contoh).</p>
-  </section>
-
-  <section class="panel card" id="panelAbout" aria-hidden="true">
-    <div class="panel-head">
-      <h2>Tentang</h2>
-      <button class="panel-close" data-closepanel="panelAbout">✕</button>
-    </div>
-    <p class="big-p">Media belajar matematika untuk anak tunagrahita.</p>
-  </section>
-
-  <!-- AUDIO SISWA -->
   <audio id="bgMusic" loop>
-    <source src="/assets/sounds/mp3.1.mp3" type="audio/mpeg">
+    <source src="../../assets/sounds/mp3.1.mp3" type="audio/mpeg">
   </audio>
 
   <audio id="clickSound">
-    <source src="/assets/sounds/click.mp3" type="audio/mpeg">
+    <source src="../../assets/sounds/click.mp3" type="audio/mpeg">
   </audio>
 
+  <div id="toast" aria-live="polite"></div>
 
-  <!-- toast (kalau ui.js kamu pakai) -->
-  <div class="toast" id="toast" aria-live="polite"></div>
-
-  <!-- JS -->
-  <script src="/js/storage.js"></script>
-  <script src="/js/ui.js"></script>
+  <script src="../../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/ui.js"></script>
   <script src="siswa_home.js"></script>
 </body>
 </html>

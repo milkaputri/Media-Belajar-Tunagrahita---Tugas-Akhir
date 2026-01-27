@@ -13,7 +13,7 @@ body{
 
 /* Judul & tombol ikut membesar/mengecil */
 .title{ font-size: calc(var(--h1) * var(--scale)); }
-.btn-primary.big{ font-size: calc(var(--btn) * var(--scale)); }
+.app-btn-xl{ font-size: calc(var(--btn) * var(--scale)); }
 
 /* ====== Theme system ====== */
 :root{
@@ -99,9 +99,10 @@ body.sidebar-open #menuBtn{
   flex-direction:column;
   gap:10px;
 }
-.nav-item{
+.side-item{
   border:0;
   cursor:pointer;
+  width: 100%;
   min-height: 58px;
   border-radius: 16px;
   background: rgba(63,91,255,.12);
@@ -111,7 +112,7 @@ body.sidebar-open #menuBtn{
   text-align:left;
   padding: 12px 14px;
 }
-.nav-item.active{
+.side-item.active{
   background: var(--primary);
   color:#fff;
 }

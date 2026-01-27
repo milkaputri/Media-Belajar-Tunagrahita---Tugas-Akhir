@@ -16,10 +16,17 @@ body {
   position: relative;
   width:100vw;
   height:100vh;
+  display:flex;
+  flex-direction:column;
 }
-.arena-content,#questionBox {
+#questionBox {
   overflow-y: auto;
-  max-height: calc(100vh - 200px);
+}
+body.matchline-mode #questionBox {
+  overflow: hidden;
+}
+body.matchline-mode .stage {
+  overflow: hidden;
 }
 /* background */
 .bg {
@@ -152,14 +159,14 @@ body {
 .stage {
   position: relative;
   z-index: 3;
-  width: min(1120px, 94vw);
-  margin: 14px auto;
+  width: calc(100vw - (var(--arena-pad) * 2));
+  margin: 0 auto var(--arena-pad);
   padding: 26px;
   border-radius: 32px;
   background: var(--card);
   box-shadow: 0 22px 60px rgba(0,0,0,.16);
-  max-height: calc(100vh - 160px);
-  /* ⬅️ kunci jarak bawah */
+  flex: 1 1 auto;
+  min-height: 0;
 display: flex;
   flex-direction: column;
 }
@@ -181,6 +188,7 @@ display: flex;
   border-radius: 28px;
   background: rgba(255,255,255,.72);
   border: 2px solid rgba(0,0,0,.06);
+  flex: 1 1 auto;
 }
 /* pilihan jawaban */
 .choice {
@@ -210,32 +218,31 @@ display: flex;
   gap: 14px;
   justify-content:center;
 }
-.btn {
+.arena-btn{
   min-height: 74px;
   min-width: 200px;
   border-radius: 22px;
-  border: 0;
-  cursor:pointer;
   font-size: 24px;
   font-weight: 1000;
   letter-spacing: 1px;
+}
+.btn-secondary.arena-btn{
   background: rgba(0,0,0,.10);
   color: var(--text);
+  border: 0;
 }
-.btn.primary {
-  background: var(--primary);
-  color:#fff;
-}
-.btn:disabled {
+.arena-btn:disabled{
   opacity:.45;
   cursor:not-allowed;
 }
-/* settings kanan bawah (seragam dengan back) */
-.fab-settings {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
-  z-index: 6;
+
+.arena-btn-sm{
+  min-height: 58px;
+  min-width: 160px;
+  border-radius: 18px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
 }
 /* ========= OVERLAY ========= */
 .overlay {
@@ -319,7 +326,7 @@ display: flex;
     gap: 6px;
   }
   .stage {
-    width: min(980px, 94vw);
+    width: calc(100vw - 24px);
     padding: 18px;
     border-radius: 28px;
   }
@@ -334,7 +341,7 @@ display: flex;
     min-height: 70px;
     font-size: 26px;
   }
-  .btn {
+  .arena-btn {
     min-height: 66px;
     min-width: 160px;
     font-size: 22px;
@@ -646,17 +653,17 @@ body.matchline-mode .progress-text {
   font-size: 16px;
 }
 body.matchline-mode .stage {
-  margin: 10px auto;
+  margin: 0 auto 10px;
   padding: 18px;
-  max-height: calc(100vh - 140px);
+  flex: 1 1 auto;
+  min-height: 0;
 }
 body.matchline-mode .q-title {
   font-size: 24px;
   margin-bottom: 10px;
 }
 body.matchline-mode #questionBox {
-  overflow-y: auto;
-  max-height: 55vh;
+  overflow: hidden;
 }
 body.matchline-mode .q-box {
   padding: 12px;
@@ -665,7 +672,7 @@ body.matchline-mode .q-box {
 body.matchline-mode .actions {
   margin-top: 8px;
 }
-body.matchline-mode .btn {
+body.matchline-mode .arena-btn {
   min-height: 60px;
   min-width: 160px;
   font-size: 20px;
@@ -698,23 +705,25 @@ z-index: 3;
   position: relative;
   z-index: 2;
 }
+.ml-right {
+  justify-self: end;
+}
 #questionBox .ml-wrap {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 #questionBox .ml-board {
-  width: min(980px, 92vw);
+  width: 100%;
   display: grid;
-  grid-template-columns: 1.5fr .7fr;
-  /* kiri gambar, kanan angka */
+  grid-template-columns: 1fr 200px;
   gap: 18px;
   align-items: start;
 }
 /* versi ringkas agar muat 1 layar */
 body.matchline-mode #questionBox .ml-board {
-  width: min(980px, 94vw);
-  grid-template-columns: 1.4fr .6fr;
+  width: 100%;
+  grid-template-columns: 1fr 200px;
   gap: 16px;
   align-items: start;
 }
@@ -731,10 +740,14 @@ body.matchline-mode #questionBox .ml-col {
 }
 /* kartu kiri (isi bintang) */
 #questionBox .ml-card {
-  background: rgba(255,255,255,.75);
-  border: 2px solid rgba(0,0,0,.06);
+  background: #ffffff;
+  border: 3px solid rgba(63,91,255,.35);
   border-radius: 22px;
   padding: 14px;
+}
+#questionBox .ml-card.ml-number {
+  background: #eef3ff;
+  border-color: rgba(63,91,255,.55);
 }
 body.matchline-mode #questionBox .ml-card {
   border-radius: 22px;
@@ -743,16 +756,18 @@ body.matchline-mode #questionBox .ml-card {
 body.matchline-mode #questionBox .ml-card.ml-number {
   min-height: 86px;
   padding: 12px;
+  background: #f7f9ff;
+  border-color: rgba(63,91,255,.6);
 }
 /* area ikon bintang: bikin GRID biar gak jadi 1 kolom */
 #questionBox .ml-icons {
   display: grid !important;
-  grid-template-columns: repeat(5, 52px) !important;
+  grid-template-columns: repeat(10, minmax(32px, 1fr)) !important;
   gap: 10px !important;
   justify-content: start !important;
 }
 body.matchline-mode #questionBox .ml-icons {
-  grid-template-columns: repeat(5, 52px) !important;
+  grid-template-columns: repeat(10, minmax(28px, 1fr)) !important;
   gap: 10px !important;
 }
 /* setiap item bintang */
