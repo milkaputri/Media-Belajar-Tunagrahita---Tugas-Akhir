@@ -8,6 +8,8 @@ import { renderFingerAdditionPick } from "./finger_addition_pick.js";
 import { renderObjectsAdditionPick } from "./objects_addition_pick.js";
 import { renderPlaceValueBoxes } from "./place_value_boxes.js";
 import { renderImagePlaceValuePick } from "./image_place_value_pick.js";
+import { renderCarAdditionPick } from "./car_addition_pick.js";
+import { renderAppleSubtractionPick } from "./apple_subtraction_pick.js";
 
 // nanti tambah renderer lain di sini
 
@@ -21,5 +23,7 @@ export const RENDERERS = {
   "finger_addition_pick": renderFingerAdditionPick,
   "objects_addition_pick": renderObjectsAdditionPick,
   "place_value_boxes": renderPlaceValueBoxes,
-  "image_place_value_pick": renderImagePlaceValuePick
+  "image_place_value_pick": renderImagePlaceValuePick,
+  "car_addition_pick": renderCarAdditionPick,
+  "apple_subtraction_pick": renderAppleSubtractionPick
 };
