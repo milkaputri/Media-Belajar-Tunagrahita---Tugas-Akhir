@@ -11,6 +11,14 @@ import { genBil50_HitungObjek } from "../../js/content/domains/bilangan/bil50/va
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
+import { genUang20_KenalUang } from "../../js/content/domains/bilangan/uang20/variants/kenalUang.js";
+import { renderMoneyDragMatch } from "../../js/game/renderers/money_drag_match.js";
+import { genUang20_BelanjaBarang } from "../../js/content/domains/bilangan/uang20/variants/belanjaBarang.js";
+import { renderMoneyShopSum } from "../../js/game/renderers/money_shop_sum.js";
+import { genUang50_BenarTidak } from "../../js/content/domains/bilangan/uang50/variants/benarTidak.js";
+import { renderMoneyTrueFalse } from "../../js/game/renderers/money_true_false.js";
+import { genUang50_CelenganKu } from "../../js/content/domains/bilangan/uang50/variants/celenganKu.js";
+import { renderMoneyPiggyBank } from "../../js/game/renderers/money_piggy_bank.js";
 
 const TOTAL_QUESTIONS = 20;
 const IDLE_LIMIT_MS = 5 * 60 * 1000;
@@ -269,6 +277,10 @@ function renderQuestion(){
   document.body.classList.toggle("objadd-mode", q.type === "objects_addition_pick");
   document.body.classList.toggle("pv-mode", q.type === "place_value_boxes");
   document.body.classList.toggle("imgpv-mode", q.type === "image_place_value_pick");
+  document.body.classList.toggle("money-mode", q.type === "money_drag_match");
+  document.body.classList.toggle("money-shop-mode", q.type === "money_shop_sum");
+  document.body.classList.toggle("money-tf-mode", q.type === "money_true_false");
+  document.body.classList.toggle("money-piggy-mode", q.type === "money_piggy_bank");
 
   currentAnswer = null;
   btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
@@ -364,6 +376,38 @@ function renderQuestion(){
     });
     speakPrompt(q.prompt);
   }
+  else if(q.type === "money_drag_match"){
+    rendererController = renderMoneyDragMatch({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "money_shop_sum"){
+    rendererController = renderMoneyShopSum({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "money_true_false"){
+    rendererController = renderMoneyTrueFalse({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "money_piggy_bank"){
+    rendererController = renderMoneyPiggyBank({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
   else {
     // fallback debug
     questionBox.innerHTML = `<div style="padding:16px;font-weight:900">Tipe soal belum ada renderer: ${q.type}</div>`;
@@ -381,7 +425,14 @@ function submitAnswer(){
   const q = questions[index];
 
   // belum jawab apa-apa
-  if(currentAnswer === null || (q.type === "stack_number_tower" && Array.isArray(currentAnswer) && currentAnswer.length === 0)){
+  if(
+    currentAnswer === null ||
+    (q.type === "stack_number_tower" && Array.isArray(currentAnswer) && currentAnswer.length === 0) ||
+    (q.type === "money_drag_match" && (!(currentAnswer instanceof Map) || currentAnswer.size < (q.data?.items?.length || 0))) ||
+    (q.type === "money_shop_sum" && (!currentAnswer || Number(currentAnswer.sum) <= 0)) ||
+    (q.type === "money_true_false" && typeof currentAnswer !== "boolean") ||
+    (q.type === "money_piggy_bank" && Number(currentAnswer) <= 0)
+  ){
     showOverlay({
       title:"Belum selesai 😊",
       text:"Kerjakan dulu ya (tarik garis / drag angka) lalu klik CEK.",
@@ -442,6 +493,26 @@ function submitAnswer(){
   }
   if(q.type === "image_place_value_pick"){
     correct = String(currentAnswer) === String(q.answer);
+  }
+  if(q.type === "money_drag_match"){
+    const ans = currentAnswer instanceof Map ? currentAnswer : null;
+    const items = q.data?.items || [];
+    correct = !!ans && items.length > 0 && items.every((item) => {
+      return Number(ans.get(item.id)) === Number(item.price);
+    });
+  }
+  if(q.type === "money_shop_sum"){
+    const ans = currentAnswer || null;
+    const count = ans?.count ?? 0;
+    const minNotes = q.data?.minNotes ?? 2;
+    const maxNotes = q.data?.maxNotes ?? 3;
+    correct = !!ans && Number(ans.sum) === Number(q.answer) && count >= minNotes && count <= maxNotes;
+  }
+  if(q.type === "money_true_false"){
+    correct = typeof currentAnswer === "boolean" && currentAnswer === q.answer;
+  }
+  if(q.type === "money_piggy_bank"){
+    correct = Number(currentAnswer) === Number(q.answer);
   }
 
   if(correct){
@@ -631,12 +702,42 @@ function generateBil100TangkapAngka(){
   return shuffle(list);
 }
 
+function generateUang20KenalUang(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genUang20_KenalUang());
+  }
+  return shuffle(list);
+}
 
+function generateUang20BelanjaBarang(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genUang20_BelanjaBarang());
+  }
+  return shuffle(list);
+}
+
+function generateUang50BenarTidak(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genUang50_BenarTidak());
+  }
+  return shuffle(list);
+}
+
+function generateUang50CelenganKu(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genUang50_CelenganKu());
+  }
+  return shuffle(list);
+}
 // ---------- INIT
 function init(){
   buildDots();
 
-  questions = generateBil100TangkapAngka();
+  questions = generateUang50CelenganKu();
   index = 0;
   stars = 0;
 

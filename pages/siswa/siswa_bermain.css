@@ -14,6 +14,7 @@ body {
 }
 .arena {
   position: relative;
+  align-self: stretch;
   width:100vw;
   height:100vh;
   display:flex;
@@ -41,6 +42,7 @@ body.matchline-mode .stage {
 /* ========= TOPBAR ========= */
 .topbar {
   position: relative;
+  align-self: stretch;
   z-index: 5;
   padding: var(--arena-pad);
   display:flex;
@@ -158,6 +160,7 @@ body.matchline-mode .stage {
 /* ========= ARENA / STAGE (lebih besar) ========= */
 .stage {
   position: relative;
+  align-self: stretch;
   z-index: 3;
   width: calc(100vw - (var(--arena-pad) * 2));
   margin: 0 auto var(--arena-pad);
@@ -327,7 +330,7 @@ body.tower-mode .actions {
     font-size: 16px;
   }
   .stepper {
-    gap: 6px;
+    gap: 10px;
   }
   .stage {
     width: calc(100vw - 24px);
@@ -683,6 +686,7 @@ body.matchline-mode .arena-btn {
 }
 .ml-board {
   position: relative;
+  align-self: stretch;
   width: 100%;
 }
 /* SVG garis */
@@ -707,6 +711,7 @@ z-index: 3;
 /* Kolom kiri & kanan */
 .ml-col {
   position: relative;
+  align-self: stretch;
   z-index: 2;
 }
 .ml-right {
@@ -747,7 +752,7 @@ body.matchline-mode #questionBox .ml-col {
   background: #ffffff;
   border: 3px solid rgba(63,91,255,.35);
   border-radius: 22px;
-  padding: 14px;
+  padding: 18px;
 }
 #questionBox .ml-card.ml-number {
   background: #eef3ff;
@@ -822,11 +827,13 @@ padding-bottom: 24px;
 /* 2) Pastikan bar tombol (CEK/LANJUT) berada di atas semua layer */
 .actions, .arena-actions, .btn-row, .footer-actions  {
   position: relative;
+  align-self: stretch;
   z-index: 50;
 }
 /* 3) Kadang container soal melebar sampai nutup tombol */
 .ml-wrap, .ml-board {
   position: relative;
+  align-self: stretch;
   z-index: 1;
 }
 /* 4) SVG garis JANGAN pernah nangkep klik */
@@ -847,6 +854,7 @@ body.matchline-mode .ml-number {
 /* 5) Kalau ada overlay container besar yang nutup area bawah */
 .question-area, .arena-card, .panel-soal {
   position: relative;
+  align-self: stretch;
   z-index: 1;
 }
 
@@ -902,7 +910,7 @@ body.countobj-mode .q-box {
 .co-board {
   background: rgba(255,255,255,.85);
   border-radius: 24px;
-  padding: 14px;
+  padding: 18px;
   box-shadow: 0 12px 30px rgba(0,0,0,.08);
   flex: 1 1 auto;
   min-height: 0;
@@ -928,6 +936,7 @@ body.countobj-mode .q-box {
   font-size: clamp(18px, 2.1vw, 28px);
   box-shadow: 0 10px 20px rgba(0,0,0,.08);
   position: relative;
+  align-self: stretch;
   cursor: pointer;
   width: 100%;
   height: 100%;
@@ -954,7 +963,7 @@ body.countobj-mode .q-box {
   .co-objects {
     grid-template-columns: repeat(10, minmax(0, 1fr));
     grid-template-rows: repeat(6, minmax(0, 1fr));
-    gap: 6px;
+    gap: 10px;
   }
   .co-item {
     border-radius: 12px;
@@ -1000,6 +1009,7 @@ body.balloon-mode .q-box {
 }
 .balloon-field {
   position: relative;
+  align-self: stretch;
   width: 100%;
   height: 100%;
   min-height: 320px;
@@ -1054,6 +1064,7 @@ body.balloon-mode .q-box {
   align-items: center;
   justify-content: center;
   position: relative;
+  align-self: stretch;
 }
 .balloon-shine {
   position: absolute;
@@ -1150,11 +1161,13 @@ body.rain-mode .q-box {
   border: 0;
   height: 100%;
   position: relative;
+  align-self: stretch;
   overflow: hidden;
   margin: 0;
 }
 body.rain-mode .q-title {
   position: relative;
+  align-self: stretch;
   z-index: 3;
 }
 
@@ -1281,7 +1294,7 @@ body.rain-mode .q-title {
 /* MENARA BALOK (bil100) */
 /* =========================== */
 body.tower-mode .q-box {
-  padding: 14px;
+  padding: 18px;
   align-items: stretch;
   justify-content: stretch;
 }
@@ -1303,6 +1316,7 @@ body.tower-mode .q-box {
   background: linear-gradient(180deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,.7) 100%);
   border: 2px dashed rgba(0,0,0,.08);
   position: relative;
+  align-self: stretch;
   overflow: hidden;
 }
 .tower-piece {
@@ -1319,6 +1333,7 @@ body.tower-mode .q-box {
   font-size: 28px;
   color: #4a2b0c;
   position: relative;
+  align-self: stretch;
   cursor: pointer;
 }
 .tower-piece::after {
@@ -1388,7 +1403,7 @@ body.tower-mode .q-box {
 /* JARI PENJUMLAHAN */
 /* =========================== */
 body.finger-mode .q-box {
-  padding: 14px;
+  padding: 18px;
   align-items: stretch;
   justify-content: stretch;
 }
@@ -1422,6 +1437,7 @@ body.finger-mode .q-box {
   background: linear-gradient(180deg, #ffe9d2 0%, #f8cda7 100%);
   border: 2px solid rgba(160, 110, 70, .35);
   position: relative;
+  align-self: stretch;
   box-shadow: 0 14px 26px rgba(0,0,0,.12);
   overflow: hidden;
 }
@@ -1484,7 +1500,7 @@ body.finger-mode .q-box {
 /* JUMLAH BENDA */
 /* =========================== */
 body.objadd-mode .q-box {
-  padding: 14px;
+  padding: 18px;
   align-items: stretch;
   justify-content: stretch;
 }
@@ -1564,7 +1580,7 @@ body.objadd-mode .q-box {
 /* NILAI TEMPAT - KOTAK ANGKA */
 /* =========================== */
 body.pv-mode .q-box {
-  padding: 14px;
+  padding: 18px;
   align-items: stretch;
   justify-content: stretch;
 }
@@ -1649,7 +1665,7 @@ body.pv-mode .q-box {
   display: grid;
   grid-template-columns: repeat(20, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
-  gap: 6px;
+  gap: 10px;
   align-content: start;
   background: rgba(255,255,255,.7);
 }
@@ -1690,7 +1706,7 @@ body.pv-mode .q-box {
 /* NILAI GAMBAR */
 /* =========================== */
 body.imgpv-mode .q-box {
-  padding: 14px;
+  padding: 18px;
   align-items: stretch;
   justify-content: stretch;
 }
@@ -1735,7 +1751,7 @@ body.imgpv-mode .q-box {
   min-height: 140px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
-  gap: 6px;
+  gap: 10px;
   align-content: center;
   justify-items: center;
   box-shadow: 0 12px 22px rgba(0,0,0,.12);
@@ -1778,4 +1794,731 @@ body.imgpv-mode .q-box {
   .imgpv-head-value { font-size: 16px; }
   .imgpv-item { width: 32px; height: 32px; font-size: 22px; }
   .imgpv-choice { min-width: 96px; height: 56px; font-size: 22px; }
+}
+
+/* =========================== */
+/* KENAL UANG (drag uang ke barang) */
+/* =========================== */
+body.money-mode .q-box {
+  padding: 18px;
+  align-items: stretch;
+  justify-content: stretch;
+  overflow: hidden;
+}
+body.money-mode #questionBox {
+  overflow: hidden;
+  max-height: none;
+}
+body.money-shop-mode #questionBox {
+  overflow: hidden;
+  max-height: none;
+}
+.money-wrap {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+  align-items: stretch;
+}
+.money-board {
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+.money-card {
+  background: #fff;
+  border: 3px solid rgba(0,0,0,.12);
+  border-radius: 22px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 12px 22px rgba(0,0,0,.12);
+}
+.money-illus {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 10px;
+  align-content: start;
+  justify-items: start;
+}
+.money-icon {
+  width: 100%;
+  height: 300px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.9);
+  border: 2px solid rgba(0,0,0,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+}
+.money-name {
+  font-weight: 1000;
+  font-size: 26px;
+  color: #1b2a3a;
+}
+.money-price {
+  font-weight: 1000;
+  font-size: 24px;
+  color: #1b2a3a;
+  background: rgba(255,255,255,.9);
+  border: 2px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  padding: 6px 12px;
+  display: inline-flex;
+  width: fit-content;
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
+}
+.money-drop {
+  min-height: 150px;
+  border-radius: 18px;
+  border: 3px dashed rgba(0,0,0,.2);
+  background: rgba(255,255,255,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(0,0,0,.6);
+  font-weight: 900;
+  padding: 10px;
+  transition: .15s ease;
+}
+.money-drop.over {
+  border-color: #3F5BFF;
+  box-shadow: 0 12px 0 rgba(63,91,255,.18);
+}
+.money-drop.filled {
+  border-style: solid;
+  color: rgba(0,0,0,.75);
+}
+.money-drop.filled span {
+  display: none;
+}
+.money-drop.has-note span {
+  display: none;
+}
+.money-drop-notes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+  width: 100%;
+}
+.money-drop-field {
+  position: relative;
+  align-self: stretch;
+  padding: 12px;
+}
+.money-cashier {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  pointer-events: none;
+  opacity: .95;
+}
+.money-shop-mode .money-card {
+  grid-template-columns: 1.1fr 1fr;
+}
+.money-shop-mode .money-shop-left {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+}
+.money-shop-mode .money-stand {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.money-shop-mode .money-stand-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+.money-shop-mode .money-shop-icon {
+  position: relative;
+  align-self: stretch;
+  z-index: 2;
+  background: transparent;
+  box-shadow: none;
+}
+.money-shop-mode .money-stand-name {
+  font-weight: 1000;
+  font-size: 24px;
+  color: #1b2a3a;
+  margin: 0 0 6px 2px;
+}
+.money-shop-mode .money-price-board {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  z-index: 3;
+  background: rgba(255,200,120,.85);
+  border: 2px solid rgba(120,70,30,.35);
+  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+  font-size: 28px;
+}
+.money-drop.cling {
+  animation: moneyCling .35s ease;
+}
+.money-pool {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-content: center;
+  justify-items: stretch;
+  height: 100%;
+  overflow: hidden;
+}
+.money-note {
+  width: 100%;
+  height: 130px;
+  border-radius: 16px;
+  border: 2px solid rgba(0,0,0,.15);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  overflow: hidden;
+  box-shadow: 0 10px 18px rgba(0,0,0,.14);
+  cursor: grab;
+  transition: .15s ease;
+}
+.money-note img {
+  width:200px;
+  height: 150px;
+  object-fit:fill;
+}
+.money-note:active {
+  cursor: grabbing;
+  transform: scale(.98);
+}
+.money-note.selected {
+  border-color: #3F5BFF;
+  box-shadow: 0 12px 0 rgba(63,91,255,.18);
+  transform: translateY(-1px);
+}
+.money-note.used {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.money-note.wrong {
+  animation: moneyWrong .3s ease;
+}
+.money-drop .money-note {
+  cursor: default;
+}
+
+@keyframes moneyWrong {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+@keyframes moneyCling {
+  0% { transform: scale(.96); }
+  70% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 720px) {
+  .money-wrap {
+    grid-template-columns: 1fr;
+  }
+  .money-board {
+    grid-template-rows: 1fr;
+  }
+  .money-icon { width: 130px; height: 130px; font-size: 64px; }
+  .money-name { font-size: 22px; }
+  .money-price { font-size: 22px; }
+  .money-card { grid-template-columns: 1fr; }
+  .money-drop { min-height: 120px; }
+  .money-note { width: 100%; height: 100px; }
+  .money-cashier { width: 92px; height: 92px; }
+  .money-shop-mode .money-stand { min-height: 220px; }
+  .money-shop-mode .money-price-board { font-size: 24px; }
+}
+@media (max-width: 720px) {
+  .money-shop-mode .money-stand {
+    min-height: 190px;
+    padding-bottom: 44px;
+  }
+  .money-shop-mode .money-shop-icon {
+    width: 90px;
+    height: 90px;
+    font-size: 44px;
+  }
+  .money-shop-mode .money-price-board {
+    bottom: 4px;
+    font-size: 20px;
+    padding: 4px 8px;
+  }
+}
+@media (max-width: 400px) {
+  .money-shop-mode .money-stand {
+    min-height: 170px;
+    padding-bottom: 52px;
+  }
+  .money-shop-mode .money-shop-icon {
+    width: 78px;
+    height: 78px;
+    font-size: 38px;
+  }
+  .money-shop-mode .money-price-board {
+    bottom: 2px;
+    font-size: 18px;
+    padding: 3px 8px;
+  }
+}
+
+/* =========================== */
+/* BENAR / TIDAK (rp50.000) */
+/* =========================== */
+body.money-tf-mode .q-box {
+  padding: 18px;
+  align-items: stretch;
+  justify-content: stretch;
+}
+.mtf-wrap {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 16px;
+}
+.mtf-board {
+  display: grid;
+  grid-template-columns: 0.85fr 1.35fr;
+  gap: 16px;
+  align-items: stretch;
+}
+.mtf-things {
+  background: #fff;
+  border: 3px solid rgba(0,0,0,.12);
+  border-radius: 22px;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  box-shadow: 0 12px 22px rgba(0,0,0,.12);
+}
+.mtf-name {
+  font-weight: 1000;
+  font-size: 26px;
+  color: #1b2a3a;
+}
+.mtf-icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.9);
+  border: 2px solid rgba(0,0,0,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+}
+.mtf-price {
+  font-weight: 1000;
+  font-size: 26px;
+  color: #1b2a3a;
+  background: rgba(255,255,255,.9);
+  border: 2px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  padding: 6px 12px;
+  display: inline-flex;
+  width: fit-content;
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
+}
+.mtf-money-area {
+  background: #fff;
+  border: 3px solid rgba(0,0,0,.12);
+  border-radius: 22px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 12px 22px rgba(0,0,0,.12);
+  animation: mtfFloat 3s ease-in-out infinite;
+}
+.mtf-note {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 1.4;
+  border-radius: 16px;
+  border: 2px solid rgba(0,0,0,.15);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  box-shadow: 0 10px 18px rgba(0,0,0,.14);
+}
+
+.mpb-note-coin{
+  aspect-ratio: 1 / 1;
+  max-width: 90%;
+  margin: auto;           /* biar koin di tengah */
+  border-radius: 50%;
+}
+
+.mpb-note-coin img{
+  object-fit: contain;
+  transform: scale(0.95);
+}
+
+.mpb-note:not(.mpb-note-coin) img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* penuh */
+  transform: scale(1.05); /* mepet border */
+}
+
+.mtf-note img {
+  width: 50%;
+  height: 150%;
+  object-fit: contain;
+}
+.mtf-actions {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+.mtf-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 24px;
+  border: 0;
+  font-size: 42px;
+  font-weight: 1000;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.mtf-true {
+  background: #e6f7e8;
+  color: #1c7d2f;
+  box-shadow: 0 12px 20px rgba(28,125,47,.2);
+}
+.mtf-false {
+  background: #ffe9e9;
+  color: #b52020;
+  box-shadow: 0 12px 20px rgba(181,32,32,.2);
+}
+.mtf-btn.selected {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 16px 24px rgba(0,0,0,.2);
+}
+.mtf-btn:active {
+  transform: scale(.98);
+}
+.mtf-actions.chosen-true .mtf-false,
+.mtf-actions.chosen-false .mtf-true {
+  opacity: .35;
+  filter: grayscale(0.6);
+  box-shadow: none;
+}
+
+@keyframes mtfFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@media (max-width: 720px) {
+  .mtf-board {
+    grid-template-columns: 1fr;
+  }
+  .mtf-icon {
+    width: 120px;
+    height: 100%;
+    font-size: 64px;
+  }
+  .mtf-price {
+    font-size: 22px;
+  }
+  .mtf-note {
+    height: 86px;
+  }
+  .mtf-btn {
+    width: 76px;
+    height: 76px;
+    font-size: 36px;
+  }
+}
+
+/* =========================== */
+/* CELENGAN KU (rp50.000) */
+/* =========================== */
+body.money-piggy-mode .q-box {
+  padding: 18px;
+  align-items: stretch;
+  justify-content: stretch;
+  overflow: hidden;
+}
+.money-piggy-mode #questionBox {
+  overflow: hidden;
+  max-height: none;
+}
+.mpb-wrap {
+  width: 100%;
+  height: 100%;
+}
+.mpb-board {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 15px;
+  align-items: stretch;
+}
+.mpb-piggy {
+  background: #fff;
+  border: 3px solid rgba(0,0,0,.12);
+  border-radius: 22px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: center;
+  box-shadow: 0 12px 22px rgba(0,0,0,.12);
+}
+.mpb-piggy-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2px;
+  justify-items: center;
+}
+
+.mpb-piggy-img {
+  width: min(240px, 74%);
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  animation: piggyFloat 2.6s ease-in-out infinite;
+}
+.mpb-piggy-head .mpb-bar {
+  justify-self: start;
+  margin-left: -14px;
+}
+.mpb-slot {
+  width: min(320px, 90%);
+  min-height: 70px;
+  border-radius: 18px;
+  border: 3px dashed rgba(0,0,0,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: rgba(0,0,0,.6);
+}
+.mpb-slot.over {
+  border-color: #ff6b8a;
+  box-shadow: 0 0 0 6px rgba(255, 170, 190, .25);
+}
+.mpb-total {
+  font-weight: 1000;
+  font-size: 26px;
+  color: #1b2a3a;
+  background: rgba(255,255,255,.9);
+  border: 2px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  padding: 6px 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
+}
+.mpb-bar {
+  width: 24px;
+  height: 100%;
+  background: rgba(255, 170, 190, .25);
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.08);
+  position: relative;
+  align-self: stretch;
+  min-height: 160px;
+}
+.mpb-bar-fill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(180deg, #ffd1df 0%, #ff7fa3 55%, #ff5e8a 100%);
+  box-shadow: inset 0 -3px 0 rgba(120, 30, 60, .25), 0 6px 10px rgba(255, 120, 160, .35);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: height .25s ease;
+}
+
+.mpb-money-area {
+  background: #fff;
+  border: 3px solid rgba(0,0,0,.12);
+  border-radius: 22px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  row-gap: 10px;
+  min-height: 340px;
+  max-height: 420px;
+  align-content: start;
+  align-items: center;
+  box-shadow: 0 12px 22px rgba(0,0,0,.12);
+}
+
+
+.mpb-note {
+  width: 100%;
+  aspect-ratio: 3 / 1.6;
+  height: auto;
+  border-radius: 16px;
+  border: 2px solid rgba(0,0,0,.15);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: 0 10px 18px rgba(0,0,0,.14);
+  cursor: pointer;
+  transition: transform .15s ease;
+  overflow: hidden;
+}
+.mpb-note.dragging {
+  opacity: .4;
+  transform: scale(.98);
+}
+.mpb-note:active {
+  transform: scale(.98);
+}
+.mpb-note img {
+  display: block;        /* hilangkan gap inline image */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* bikin gambar “mengisi kotak” */
+  transform: scale(1.06);
+}
+.mpb-note-coin {
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+.mpb-note-coin img {
+  object-fit: contain;
+  transform: scale(1.0);
+}
+.mpb-fly {
+  position: fixed;
+  width: 120px;
+  height: 80px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 9999;
+  transition: all .45s ease;
+}
+.mpb-piggy.mpb-wrong {
+  animation: piggyShake .35s ease;
+}
+.mpb-piggy.mpb-done .mpb-slot {
+  border-color: #2ecc71;
+  background: rgba(46,204,113,.12);
+}
+.mpb-piggy.mpb-plung .mpb-slot {
+  animation: piggyPlung .4s ease;
+  box-shadow: 0 0 0 6px rgba(255, 170, 190, .25);
+}
+.mpb-piggy.mpb-plung .mpb-piggy-img {
+  animation: piggyPlungImg .4s ease;
+}
+
+@keyframes piggyFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes piggyShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+@media (max-width: 720px) {
+  .mpb-board {
+    grid-template-columns: 1fr;
+  }
+  .mpb-piggy-img {
+    width: min(200px, 70%);
+  }
+  .mpb-slot {
+    min-height: 70px;
+  }
+  .mpb-bar {
+    height: 110px;
+  }
+  .mpb-money-area {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    min-height: 260px;
+    max-height: 340px;
+    align-content: start;
+  }
+  .mpb-note {
+    height: 92px;
+  }
+  .mpb-note-coin {
+    height: 110px;
+  }
+}
+@keyframes piggyPlung {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+@keyframes piggyPlungImg {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px) scale(1.02); }
+  100% { transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+  .mpb-board {
+    grid-template-columns: 1fr;
+  }
+  .mpb-piggy-img {
+    width: min(220px, 75%);
+  }
+  .mpb-slot {
+    min-height: 70px;
+  }
+  .mpb-bar {
+    height: 100%;
+  }
+  .mpb-note {
+    height: 92px;
+  }
+  .mpb-note-coin {
+    height: 110px;
+  }
 }
