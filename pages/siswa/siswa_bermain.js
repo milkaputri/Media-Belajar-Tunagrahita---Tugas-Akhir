@@ -8,6 +8,8 @@ import { renderMatchLineCountToNumber } from "../../js/game/renderers/match_line
 import { genBil20_Urutkan } from "../../js/content/domains/bilangan/bil20/variants/urutkan.js";
 import { renderUrutkanSequenceFill } from "../../js/game/renderers/urutkan_sequence_fill.js";
 import { genBil50_HitungObjek } from "../../js/content/domains/bilangan/bil50/variants/hitungObjek.js";
+import { genBil50_TambahMobil } from "../../js/content/domains/bilangan/bil50/variants/tambahMobil.js";
+import { genBil50_KurangApel } from "../../js/content/domains/bilangan/bil50/variants/kurangApel.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
@@ -19,6 +21,8 @@ import { genUang50_BenarTidak } from "../../js/content/domains/bilangan/uang50/v
 import { renderMoneyTrueFalse } from "../../js/game/renderers/money_true_false.js";
 import { genUang50_CelenganKu } from "../../js/content/domains/bilangan/uang50/variants/celenganKu.js";
 import { renderMoneyPiggyBank } from "../../js/game/renderers/money_piggy_bank.js";
+import { renderCarAdditionPick } from "../../js/game/renderers/car_addition_pick.js";
+import { renderAppleSubtractionPick } from "../../js/game/renderers/apple_subtraction_pick.js";
 
 const TOTAL_QUESTIONS = 20;
 const IDLE_LIMIT_MS = 5 * 60 * 1000;
@@ -281,6 +285,8 @@ function renderQuestion(){
   document.body.classList.toggle("money-shop-mode", q.type === "money_shop_sum");
   document.body.classList.toggle("money-tf-mode", q.type === "money_true_false");
   document.body.classList.toggle("money-piggy-mode", q.type === "money_piggy_bank");
+  document.body.classList.toggle("caradd-mode", q.type === "car_addition_pick");
+  document.body.classList.toggle("applesub-mode", q.type === "apple_subtraction_pick");
 
   currentAnswer = null;
   btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
@@ -314,6 +320,16 @@ function renderQuestion(){
     questionTitle.textContent = q.prompt;
   }else if(q.type === "image_place_value_pick"){
     questionTitle.textContent = q.prompt;
+  }else if(q.type === "car_addition_pick"){
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">${q.data?.baseCount || 0} + ${q.data?.addCount || 0}</span>
+    `;
+  }else if(q.type === "apple_subtraction_pick"){
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">${q.data?.baseCount || 0} - ${q.data?.subCount || 0}</span>
+    `;
   }else{
     questionTitle.textContent = q.prompt;
   }
@@ -402,6 +418,22 @@ function renderQuestion(){
   }
   else if(q.type === "money_piggy_bank"){
     rendererController = renderMoneyPiggyBank({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "car_addition_pick"){
+    rendererController = renderCarAdditionPick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "apple_subtraction_pick"){
+    rendererController = renderAppleSubtractionPick({
       mount: questionBox,
       q,
       onAnswerChange: (v) => { currentAnswer = v; }
@@ -512,6 +544,12 @@ function submitAnswer(){
     correct = typeof currentAnswer === "boolean" && currentAnswer === q.answer;
   }
   if(q.type === "money_piggy_bank"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "car_addition_pick"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "apple_subtraction_pick"){
     correct = Number(currentAnswer) === Number(q.answer);
   }
 
@@ -733,11 +771,25 @@ function generateUang50CelenganKu(){
   }
   return shuffle(list);
 }
+function generateBil50TambahMobil(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genBil50_TambahMobil());
+  }
+  return shuffle(list);
+}
+function generateBil50KurangApel(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genBil50_KurangApel());
+  }
+  return shuffle(list);
+}
 // ---------- INIT
 function init(){
   buildDots();
 
-  questions = generateUang50CelenganKu();
+  questions = generateBil50KurangApel();
   index = 0;
   stars = 0;
 
