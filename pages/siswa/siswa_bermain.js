@@ -8,8 +8,13 @@ import { renderMatchLineCountToNumber } from "../../js/game/renderers/match_line
 import { genBil20_Urutkan } from "../../js/content/domains/bilangan/bil20/variants/urutkan.js";
 import { renderUrutkanSequenceFill } from "../../js/game/renderers/urutkan_sequence_fill.js";
 import { genBil50_HitungObjek } from "../../js/content/domains/bilangan/bil50/variants/hitungObjek.js";
-import { genBil50_TambahMobil } from "../../js/content/domains/bilangan/bil50/variants/tambahMobil.js";
-import { genBil50_KurangApel } from "../../js/content/domains/bilangan/bil50/variants/kurangApel.js";
+import { genBil50_TambahMobil } from "../../js/content/domains/bilangan/operasi50/tambahMobil.js";
+import { genBil50_KurangApel } from "../../js/content/domains/bilangan/operasi50/kurangApel.js";
+import { genBil50_BagiDonat } from "../../js/content/domains/bilangan/operasi50/bagiDonat.js";
+import { genBil50_KaliKursi } from "../../js/content/domains/bilangan/operasi50/kaliKursi.js";
+import { genPecahan_BagiPizza } from "../../js/content/domains/bilangan/pecahan/bagiPizza.js";
+import { genPecahan_BandingkanPizza } from "../../js/content/domains/bilangan/pecahan/bandingkanPizza.js";
+import { genDesimal_BarWarna } from "../../js/content/domains/bilangan/desimalpersen/desimal.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
@@ -23,6 +28,11 @@ import { genUang50_CelenganKu } from "../../js/content/domains/bilangan/uang50/v
 import { renderMoneyPiggyBank } from "../../js/game/renderers/money_piggy_bank.js";
 import { renderCarAdditionPick } from "../../js/game/renderers/car_addition_pick.js";
 import { renderAppleSubtractionPick } from "../../js/game/renderers/apple_subtraction_pick.js";
+import { renderDonutDivisionDrag } from "../../js/game/renderers/donut_division_drag.js";
+import { renderChairMultiplicationRows } from "../../js/game/renderers/chair_multiplication_rows.js";
+import { renderPizzaFractionPick } from "../../js/game/renderers/pizza_fraction_pick.js";
+import { renderPizzaCompareDrag } from "../../js/game/renderers/pizza_compare_drag.js";
+import { renderBarDecimalPick } from "../../js/game/renderers/bar_decimal_pick.js";
 
 const TOTAL_QUESTIONS = 20;
 const IDLE_LIMIT_MS = 5 * 60 * 1000;
@@ -86,32 +96,32 @@ function playWrong(){
 let cachedVoice = null;
 if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = () => {
-    cachedVoice = pickFemaleVoice();
+    cachedVoice = pickMaleVoice();
   };
 }
 
-function pickFemaleVoice() {
+function pickMaleVoice() {
   if (!window.speechSynthesis) return null;
   const voices = window.speechSynthesis.getVoices() || [];
   if (!voices.length) return null;
 
   const idVoices = voices.filter(v => (v.lang || "").toLowerCase().startsWith("id"));
-  const femaleHint = v => /female|perempuan|cewek|girl|wanita/i.test(v.name || "");
+  const maleHint = v => /male|pria|laki|cowok|boy|man/i.test(v.name || "");
 
-  const idFemale = idVoices.find(femaleHint);
-  if (idFemale) return idFemale;
+  const idMale = idVoices.find(maleHint);
+  if (idMale) return idMale;
 
   const idAny = idVoices[0];
   if (idAny) return idAny;
 
-  const anyFemale = voices.find(femaleHint);
-  return anyFemale || voices[0];
+  const anyMale = voices.find(maleHint);
+  return anyMale || voices[0];
 }
 
 function speakPrompt(text) {
   if (!window.speechSynthesis) return;
   try {
-    if (!cachedVoice) cachedVoice = pickFemaleVoice();
+    if (!cachedVoice) cachedVoice = pickMaleVoice();
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = "id-ID";
@@ -287,6 +297,11 @@ function renderQuestion(){
   document.body.classList.toggle("money-piggy-mode", q.type === "money_piggy_bank");
   document.body.classList.toggle("caradd-mode", q.type === "car_addition_pick");
   document.body.classList.toggle("applesub-mode", q.type === "apple_subtraction_pick");
+  document.body.classList.toggle("donutdiv-mode", q.type === "donut_division_drag");
+  document.body.classList.toggle("chairmul-mode", q.type === "chair_multiplication_pick");
+  document.body.classList.toggle("pizza-mode", q.type === "pizza_fraction_pick");
+  document.body.classList.toggle("pizzacmp-mode", q.type === "pizza_compare_drag");
+  document.body.classList.toggle("bardecl-mode", q.type === "bar_decimal_pick");
 
   currentAnswer = null;
   btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
@@ -330,6 +345,28 @@ function renderQuestion(){
       <span class="q-text">${q.prompt}</span>
       <span class="q-badge">${q.data?.baseCount || 0} - ${q.data?.subCount || 0}</span>
     `;
+  }else if(q.type === "donut_division_drag"){
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">${q.data?.total || 0} : ${q.data?.kids || 0}</span>
+    `;
+  }else if(q.type === "chair_multiplication_pick"){
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">${q.data?.cols || 0} x ${q.data?.rows || 0}</span>
+    `;
+  }else if(q.type === "pizza_fraction_pick"){
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">${q.data?.fraction || ""}</span>
+    `;
+  }else if(q.type === "pizza_compare_drag"){
+    questionTitle.innerHTML = `
+      <span class="q-text">${q.prompt}</span>
+      <span class="q-badge">${q.data?.left?.n}/${q.data?.left?.d} ? ${q.data?.right?.n}/${q.data?.right?.d}</span>
+    `;
+  }else if(q.type === "bar_decimal_pick"){
+    questionTitle.textContent = q.prompt;
   }else{
     questionTitle.textContent = q.prompt;
   }
@@ -434,6 +471,46 @@ function renderQuestion(){
   }
   else if(q.type === "apple_subtraction_pick"){
     rendererController = renderAppleSubtractionPick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "donut_division_drag"){
+    rendererController = renderDonutDivisionDrag({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "chair_multiplication_pick"){
+    rendererController = renderChairMultiplicationRows({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "pizza_fraction_pick"){
+    rendererController = renderPizzaFractionPick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "pizza_compare_drag"){
+    rendererController = renderPizzaCompareDrag({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "bar_decimal_pick"){
+    rendererController = renderBarDecimalPick({
       mount: questionBox,
       q,
       onAnswerChange: (v) => { currentAnswer = v; }
@@ -552,6 +629,21 @@ function submitAnswer(){
   if(q.type === "apple_subtraction_pick"){
     correct = Number(currentAnswer) === Number(q.answer);
   }
+  if(q.type === "donut_division_drag"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "chair_multiplication_pick"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "pizza_fraction_pick"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "pizza_compare_drag"){
+    correct = String(currentAnswer) === String(q.answer);
+  }
+  if(q.type === "bar_decimal_pick"){
+    correct = Number(currentAnswer) === Number(q.answer);
+  }
 
   if(correct){
     handleCorrectAnswer();
@@ -588,6 +680,11 @@ function submitAnswer(){
       ? "Urutkan dari kecil ke besar ya"
       : "Urutkan dari besar ke kecil ya");
     return;
+  }
+  if(q.type === "pizza_fraction_pick"){
+    if(rendererController && typeof rendererController.reset === "function"){
+      rendererController.reset();
+    }
   }
 
   // salah
@@ -785,11 +882,46 @@ function generateBil50KurangApel(){
   }
   return shuffle(list);
 }
+function generateBil50BagiDonat(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genBil50_BagiDonat());
+  }
+  return shuffle(list);
+}
+function generateBil50KaliKursi(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genBil50_KaliKursi());
+  }
+  return shuffle(list);
+}
+function generatePecahanBagiPizza(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genPecahan_BagiPizza());
+  }
+  return shuffle(list);
+}
+function generatePecahanBandingkanPizza(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genPecahan_BandingkanPizza());
+  }
+  return shuffle(list);
+}
+function generateDesimalBarWarna(){
+  const list = [];
+  for(let i=0;i<TOTAL_QUESTIONS;i++){
+    list.push(genDesimal_BarWarna());
+  }
+  return shuffle(list);
+}
 // ---------- INIT
 function init(){
   buildDots();
 
-  questions = generateBil50KurangApel();
+  questions = generateDesimalBarWarna();
   index = 0;
   stars = 0;
 
