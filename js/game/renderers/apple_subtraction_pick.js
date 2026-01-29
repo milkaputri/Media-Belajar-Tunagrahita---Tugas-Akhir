@@ -3,8 +3,14 @@ export function renderAppleSubtractionPick({ mount, q, onAnswerChange }) {
   const subCount = Number(q.data?.subCount || 0);
   const appleStay = "../../assets/image/apple1.png";
   const appleRemoved = "../../assets/image/apple.png";
+  const walkerImg = "../../assets/image/anakjalan.png";
+  const sfxEat = new Audio("../../assets/sounds/makan.mp3");
 
   let remaining = subCount;
+  let targetPointer = 0;
+  let targetOrder = [];
+  let isMoving = false;
+  let moveTimer = null;
 
   const wrap = document.createElement("div");
   wrap.className = "apple-sub-wrap";
@@ -29,6 +35,11 @@ export function renderAppleSubtractionPick({ mount, q, onAnswerChange }) {
   }
 
   appleArea.appendChild(appleGrid);
+  const walker = document.createElement("img");
+  walker.className = "apple-walker";
+  walker.src = walkerImg;
+  walker.alt = "Anak jalan";
+  appleArea.appendChild(walker);
 
   const side = document.createElement("div");
   side.className = "apple-sub-side";
@@ -85,21 +96,117 @@ export function renderAppleSubtractionPick({ mount, q, onAnswerChange }) {
     }
   }
 
-  subButton.addEventListener("click", () => {
-    if (remaining <= 0) return;
-    const index = baseCount - remaining;
-    const apple = apples[index];
-    if (apple) {
-      apple.classList.remove("apple-removed");
-      apple.classList.add("apple-shake");
-      apple.addEventListener("animationend", () => {
-        apple.classList.remove("apple-shake");
-        apple.classList.add("apple-removed");
-        apple.src = appleRemoved;
-      }, { once: true });
+  function getCenter(el) {
+    const rect = el.getBoundingClientRect();
+    const parentRect = appleArea.getBoundingClientRect();
+    return {
+      x: rect.left - parentRect.left + rect.width / 2,
+      y: rect.top - parentRect.top + rect.height / 2
+    };
+  }
+
+  function getGap() {
+    const list = apples.map((a) => a.getBoundingClientRect());
+    for (let i = 0; i < list.length - 1; i++) {
+      const a = list[i];
+      for (let j = i + 1; j < list.length; j++) {
+        const b = list[j];
+        if (Math.abs(a.top - b.top) < 4) {
+          const gap = b.left - a.right;
+          if (gap > 0) return gap;
+        }
+      }
     }
+    return 10;
+  }
+
+  const walkerOffsetY = 8;
+
+  function placeWalkerAt(index) {
+    const apple = apples[index];
+    if (!apple) return;
+    const pos = getCenter(apple);
+    const w = walker.getBoundingClientRect();
+    walker.style.left = `${pos.x - w.width / 2}px`;
+    walker.style.top = `${pos.y - w.height / 2 + walkerOffsetY}px`;
+  }
+
+  function placeWalkerAfterLast() {
+    const last = apples[apples.length - 1];
+    if (!last) return;
+    const rect = last.getBoundingClientRect();
+    const parentRect = appleArea.getBoundingClientRect();
+    const gap = getGap();
+    const w = walker.getBoundingClientRect();
+    const centerX = rect.left - parentRect.left + rect.width / 2 + rect.width + gap;
+    const centerY = rect.top - parentRect.top + rect.height / 2;
+    walker.style.left = `${centerX - w.width / 2}px`;
+    walker.style.top = `${centerY - w.height / 2 + walkerOffsetY}px`;
+  }
+
+  function moveWalkerTo(index) {
+    const apple = apples[index];
+    if (!apple) return;
+    const pos = getCenter(apple);
+    const w = walker.getBoundingClientRect();
+    walker.classList.add("moving");
+    walker.style.left = `${pos.x - w.width / 2}px`;
+    walker.style.top = `${pos.y - w.height / 2 + walkerOffsetY}px`;
+  }
+
+  function computeTargets() {
+    const start = Math.max(0, baseCount - subCount);
+    targetOrder = [];
+    for (let i = baseCount - 1; i >= start; i--) {
+      targetOrder.push(i);
+    }
+  }
+
+  subButton.addEventListener("click", () => {
+    if (remaining <= 0 || isMoving) return;
+    const targetIndex = targetOrder[targetPointer];
+    targetPointer += 1;
     remaining -= 1;
     setButtonState();
+
+    if (typeof targetIndex === "number") {
+      isMoving = true;
+      subButton.disabled = true;
+      moveWalkerTo(targetIndex);
+      const finalizeMove = () => {
+        if (moveTimer) {
+          clearTimeout(moveTimer);
+          moveTimer = null;
+        }
+        walker.classList.remove("moving");
+        isMoving = false;
+        sfxEat.currentTime = 0;
+        sfxEat.play().catch(() => {});
+        const eatenApple = apples[targetIndex];
+        if (eatenApple) {
+          eatenApple.classList.add("apple-removed");
+          eatenApple.src = appleRemoved;
+        }
+        if (remaining > 0) subButton.disabled = false;
+      };
+      walker.addEventListener("transitionend", finalizeMove, { once: true });
+      moveTimer = setTimeout(finalizeMove, 520);
+    }
+  });
+
+  computeTargets();
+  requestAnimationFrame(() => {
+    if (targetOrder.length) placeWalkerAfterLast();
+  });
+  window.addEventListener("resize", () => {
+    if (remaining <= 0) return;
+    if (isMoving) return;
+    if (targetPointer === 0) {
+      placeWalkerAfterLast();
+      return;
+    }
+    const currentIndex = targetOrder[Math.max(0, targetPointer - 1)];
+    if (typeof currentIndex === "number") placeWalkerAt(currentIndex);
   });
 
   setButtonState();

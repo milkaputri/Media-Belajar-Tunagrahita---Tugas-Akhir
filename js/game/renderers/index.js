@@ -10,6 +10,11 @@ import { renderPlaceValueBoxes } from "./place_value_boxes.js";
 import { renderImagePlaceValuePick } from "./image_place_value_pick.js";
 import { renderCarAdditionPick } from "./car_addition_pick.js";
 import { renderAppleSubtractionPick } from "./apple_subtraction_pick.js";
+import { renderDonutDivisionDrag } from "./donut_division_drag.js";
+import { renderChairMultiplicationRows } from "./chair_multiplication_rows.js";
+import { renderPizzaFractionPick } from "./pizza_fraction_pick.js";
+import { renderPizzaCompareDrag } from "./pizza_compare_drag.js";
+import { renderBarDecimalPick } from "./bar_decimal_pick.js";
 
 // nanti tambah renderer lain di sini
 
@@ -25,5 +30,10 @@ export const RENDERERS = {
   "place_value_boxes": renderPlaceValueBoxes,
   "image_place_value_pick": renderImagePlaceValuePick,
   "car_addition_pick": renderCarAdditionPick,
-  "apple_subtraction_pick": renderAppleSubtractionPick
+  "apple_subtraction_pick": renderAppleSubtractionPick,
+  "donut_division_drag": renderDonutDivisionDrag,
+  "chair_multiplication_pick": renderChairMultiplicationRows,
+  "pizza_fraction_pick": renderPizzaFractionPick,
+  "pizza_compare_drag": renderPizzaCompareDrag,
+  "bar_decimal_pick": renderBarDecimalPick
 };
