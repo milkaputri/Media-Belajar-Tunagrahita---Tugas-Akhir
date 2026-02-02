@@ -7,21 +7,35 @@ function shuffle(arr) {
   return a;
 }
 
-export function genDesimal_BarWarna() {
-  const options = [
-    { fill: 3, value: 0.3 },
-    { fill: 5, value: 0.5 },
-    { fill: 8, value: 0.8 }
-  ];
-  const pick = options[Math.floor(Math.random() * options.length)];
+function fmtDecimal(n) {
+  const s = String(n);
+  return s.includes(".") ? s.replace(".", ",") : s;
+}
+
+export function genDesimal_BotolAir() {
+  const options = [];
+  for (let i = 1; i <= 10; i++) {
+    const value = i / 10;
+    options.push({
+      value,
+      label: fmtDecimal(value),
+      fill: value
+    });
+  }
+
+  const comparePool = options.filter(o => o.value >= 0.3 && o.value <= 0.9);
+  const a = comparePool[Math.floor(Math.random() * comparePool.length)];
+  let b = comparePool[Math.floor(Math.random() * comparePool.length)];
+  while (b.value === a.value) {
+    b = comparePool[Math.floor(Math.random() * comparePool.length)];
+  }
+  const pick = a.value > b.value ? a : b;
+  const choices = options.slice();
 
   return {
-    type: "bar_decimal_pick",
-    prompt: "Pilih nilai yang sesuai",
-    data: {
-      fill: pick.fill,
-      choices: shuffle([0.3, 0.5, 0.8])
-    },
+    type: "bottle_decimal_pick",
+    prompt: `Mana yang lebih besar: ${fmtDecimal(a.value)} atau ${fmtDecimal(b.value)}?`,
+    data: { choices },
     answer: pick.value
   };
 }

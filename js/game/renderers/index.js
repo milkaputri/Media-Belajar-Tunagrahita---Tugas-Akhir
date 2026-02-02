@@ -15,6 +15,8 @@ import { renderChairMultiplicationRows } from "./chair_multiplication_rows.js";
 import { renderPizzaFractionPick } from "./pizza_fraction_pick.js";
 import { renderPizzaCompareDrag } from "./pizza_compare_drag.js";
 import { renderBarDecimalPick } from "./bar_decimal_pick.js";
+import { renderBottleDecimalPick } from "./bottle_decimal_pick.js";
+import { renderPercentColor100 } from "./percent_color_100.js";
 
 // nanti tambah renderer lain di sini
 
@@ -35,5 +37,7 @@ export const RENDERERS = {
   "chair_multiplication_pick": renderChairMultiplicationRows,
   "pizza_fraction_pick": renderPizzaFractionPick,
   "pizza_compare_drag": renderPizzaCompareDrag,
-  "bar_decimal_pick": renderBarDecimalPick
+  "bar_decimal_pick": renderBarDecimalPick,
+  "bottle_decimal_pick": renderBottleDecimalPick,
+  "percent_color_100": renderPercentColor100
 };

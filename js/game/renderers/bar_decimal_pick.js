@@ -13,7 +13,7 @@ export function renderBarDecimalPick({ mount, q, onAnswerChange }) {
 
   const barImg = document.createElement("img");
   barImg.className = "bar-dec-img";
-  barImg.src = "../../assets/image/pipa2.png";
+  barImg.src = "../../assets/image/pipa.png";
   barImg.alt = "Pipa";
 
   const slices = document.createElement("div");
