@@ -17,6 +17,7 @@ import { renderPizzaCompareDrag } from "./pizza_compare_drag.js";
 import { renderBarDecimalPick } from "./bar_decimal_pick.js";
 import { renderBottleDecimalPick } from "./bottle_decimal_pick.js";
 import { renderPercentColor100 } from "./percent_color_100.js";
+import { renderUkurCompareSignPick } from "./ukur_compare_sign_pick.js";
 
 // nanti tambah renderer lain di sini
 
@@ -39,5 +40,6 @@ export const RENDERERS = {
   "pizza_compare_drag": renderPizzaCompareDrag,
   "bar_decimal_pick": renderBarDecimalPick,
   "bottle_decimal_pick": renderBottleDecimalPick,
-  "percent_color_100": renderPercentColor100
+  "percent_color_100": renderPercentColor100,
+  "ukur_compare_sign_pick": renderUkurCompareSignPick
 };

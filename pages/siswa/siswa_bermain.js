@@ -16,6 +16,8 @@ import { genPecahan_BagiPizza } from "../../js/content/domains/bilangan/pecahan/
 import { genPecahan_BandingkanPizza } from "../../js/content/domains/bilangan/pecahan/bandingkanPizza.js";
 import { genDesimal_BotolAir } from "../../js/content/domains/bilangan/desimalpersen/desimal.js";
 import { genPersen_Warnai100 } from "../../js/content/domains/bilangan/desimalpersen/persen.js";
+import { genUkurAku } from "../../js/content/domains/pengukuran/panjangPendek/variants/ukurAku.js";
+import { genUkurPerbandingan } from "../../js/content/domains/pengukuran/panjangPendek/variants/perbandingan.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
@@ -35,6 +37,8 @@ import { renderPizzaFractionPick } from "../../js/game/renderers/pizza_fraction_
 import { renderPizzaCompareDrag } from "../../js/game/renderers/pizza_compare_drag.js";
 import { renderBottleDecimalPick } from "../../js/game/renderers/bottle_decimal_pick.js";
 import { renderPercentColor100 } from "../../js/game/renderers/percent_color_100.js";
+import { renderUkurAkuPick } from "../../js/game/renderers/ukur_aku_pick.js";
+import { renderUkurCompareSignPick } from "../../js/game/renderers/ukur_compare_sign_pick.js";
 
 const DEFAULT_QUESTIONS = 20;
 let totalQuestions = DEFAULT_QUESTIONS;
@@ -306,6 +310,8 @@ function renderQuestion(){
   document.body.classList.toggle("pizzacmp-mode", q.type === "pizza_compare_drag");
   document.body.classList.toggle("bottledec-mode", q.type === "bottle_decimal_pick");
   document.body.classList.toggle("percent-mode", q.type === "percent_color_100");
+  document.body.classList.toggle("ukur-mode", q.type === "ukur_aku_pick");
+  document.body.classList.toggle("ukurcmp-mode", q.type === "ukur_compare_sign_pick");
 
   currentAnswer = null;
   btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
@@ -372,6 +378,10 @@ function renderQuestion(){
   }else if(q.type === "bottle_decimal_pick"){
     questionTitle.textContent = q.prompt;
   }else if(q.type === "percent_color_100"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "ukur_aku_pick"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "ukur_compare_sign_pick"){
     questionTitle.textContent = q.prompt;
   }else{
     questionTitle.textContent = q.prompt;
@@ -531,6 +541,22 @@ function renderQuestion(){
     });
     speakPrompt(q.prompt);
   }
+  else if(q.type === "ukur_aku_pick"){
+    rendererController = renderUkurAkuPick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
+  else if(q.type === "ukur_compare_sign_pick"){
+    rendererController = renderUkurCompareSignPick({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
   else {
     // fallback debug
     questionBox.innerHTML = `<div style="padding:16px;font-weight:900">Tipe soal belum ada renderer: ${q.type}</div>`;
@@ -660,6 +686,12 @@ function submitAnswer(){
   }
   if(q.type === "percent_color_100"){
     correct = Number(currentAnswer) === Number(q.answer);
+  }
+  if(q.type === "ukur_aku_pick"){
+    correct = String(currentAnswer) === String(q.answer);
+  }
+  if(q.type === "ukur_compare_sign_pick"){
+    correct = String(currentAnswer) === String(q.answer);
   }
 
   if(correct){
@@ -936,7 +968,7 @@ function generateDesimalBotolAir(){
 }
 
 function generateAllGamesOnce(){
-  return [
+  return shuffle([
     genDesimal_BotolAir(),
     genBil20_MengenalAngka(),
     genBil20_TarikGaris(),
@@ -952,8 +984,10 @@ function generateAllGamesOnce(){
     genBil50_BagiDonat(),
     genBil50_KaliKursi(),
     genPecahan_BagiPizza(),
-    genPecahan_BandingkanPizza()
-  ];
+    genPecahan_BandingkanPizza(),
+    genPersen_Warnai100(),
+    genUkurAku()
+  ]);
 }
 
 function generatePersenWarnai100(){
@@ -963,9 +997,23 @@ function generatePersenWarnai100(){
   }
   return shuffle(list);
 }
+function generateUkurAku(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genUkurAku());
+  }
+  return shuffle(list);
+}
+function generateUkurPerbandinganGame(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genUkurPerbandingan());
+  }
+  return shuffle(list);
+}
 // ---------- INIT
 function init(){
-  questions = generatePersenWarnai100();
+  questions = generateUkurPerbandinganGame();
   totalQuestions = questions.length;
   buildDots();
   index = 0;
