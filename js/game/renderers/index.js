@@ -18,6 +18,7 @@ import { renderBarDecimalPick } from "./bar_decimal_pick.js";
 import { renderBottleDecimalPick } from "./bottle_decimal_pick.js";
 import { renderPercentColor100 } from "./percent_color_100.js";
 import { renderUkurCompareSignPick } from "./ukur_compare_sign_pick.js";
+import { renderUkurSortHeightDrag } from "./ukur_sort_height_drag.js";
 
 // nanti tambah renderer lain di sini
 
@@ -41,5 +42,6 @@ export const RENDERERS = {
   "bar_decimal_pick": renderBarDecimalPick,
   "bottle_decimal_pick": renderBottleDecimalPick,
   "percent_color_100": renderPercentColor100,
-  "ukur_compare_sign_pick": renderUkurCompareSignPick
+  "ukur_compare_sign_pick": renderUkurCompareSignPick,
+  "ukur_sort_height_drag": renderUkurSortHeightDrag
 };
