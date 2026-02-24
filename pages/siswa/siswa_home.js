@@ -180,6 +180,8 @@ document.getElementById("btnBelajar")?.addEventListener("click", async () => {
 const btnBermain = document.getElementById("btnBermain");
 if (btnBermain) {
   btnBermain.addEventListener("click", () => {
+    localStorage.setItem("siswaBermainMode", "pilih_berat");
+
     const bgm = new Audio("../../assets/sounds/mp3.1.mp3");
     bgm.loop = true;
     bgm.volume = 0.4;
