@@ -3779,6 +3779,167 @@ body.money-piggy-mode .q-box {
 }
 
 /* ===============================
+   UKUR BERAT - PILIH YANG LEBIH BERAT
+================================ */
+body.ukurweight-mode .q-box {
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+}
+.ukurwt-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ukurwt-board {
+  width: min(980px, 100%);
+  min-height: 360px;
+  background: #ececec;
+  border: 3px solid rgba(112, 72, 232, .85);
+  border-radius: 20px;
+  padding: 16px 18px 10px;
+  box-shadow: 0 14px 28px rgba(0,0,0,.08);
+}
+.ukurwt-beam-area {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.ukurwt-base {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 105px solid #ff1523;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,.15));
+}
+.ukurwt-beam {
+  position: absolute;
+  bottom: 98px;
+  width: min(760px, 92%);
+  height: 26px;
+  background: #0f5ea8;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  transform-origin: center center;
+  box-shadow: 0 10px 18px rgba(15,94,168,.25);
+}
+.ukurwt-beam.tilt-right {
+  transform: rotate(10deg);
+}
+.ukurwt-beam.tilt-left {
+  transform: rotate(-10deg);
+}
+.ukurwt-item {
+  position: relative;
+  width: min(260px, 34vw);
+  min-height: 148px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 8px;
+  transform: translateY(-26px);
+}
+.ukurwt-item::before {
+  content: "";
+  position: absolute;
+  bottom: 38px;
+  width: calc(100% - 12px);
+  height: 8px;
+  background: rgba(0,0,0,.12);
+  border-radius: 999px;
+}
+.ukurwt-item.selected {
+  filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+}
+.ukurwt-item.selected::before {
+  background: rgba(255, 214, 10, .95);
+  box-shadow: 0 0 0 4px rgba(255,214,10,.25);
+}
+.ukurwt-img {
+  width: 100%;
+  max-width: 220px;
+  max-height: 140px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.ukurwt-label {
+  min-width: 110px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid rgba(0,0,0,.12);
+  font-size: 18px;
+  font-weight: 900;
+  color: #111;
+  text-align: center;
+  pointer-events: none;
+}
+.ukurwt-item.selected .ukurwt-label {
+  border-color: #f4b400;
+  box-shadow: 0 0 0 4px rgba(255,214,10,.2);
+}
+
+@media (max-width: 720px) {
+  .ukurwt-board {
+    min-height: 300px;
+    padding: 10px 10px 6px;
+  }
+  .ukurwt-beam-area {
+    min-height: 270px;
+  }
+  .ukurwt-base {
+    border-left-width: 36px;
+    border-right-width: 36px;
+    border-bottom-width: 72px;
+    bottom: 6px;
+  }
+  .ukurwt-beam {
+    bottom: 66px;
+    height: 18px;
+    padding: 0 8px;
+  }
+  .ukurwt-item {
+    min-height: 108px;
+    transform: translateY(-18px);
+    width: min(160px, 42vw);
+    gap: 4px;
+  }
+  .ukurwt-item::before {
+    bottom: 26px;
+    height: 6px;
+  }
+  .ukurwt-img {
+    max-width: 130px;
+    max-height: 82px;
+  }
+  .ukurwt-label {
+    min-width: 74px;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    border-width: 2px;
+  }
+}
+
+/* ===============================
    UKUR AKU (PANJANG - PENDEK)
 ================================ */
 .ukur-wrap {

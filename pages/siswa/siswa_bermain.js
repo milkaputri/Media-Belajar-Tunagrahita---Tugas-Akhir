@@ -18,6 +18,7 @@ import { genDesimal_BotolAir } from "../../js/content/domains/bilangan/desimalpe
 import { genPersen_Warnai100 } from "../../js/content/domains/bilangan/desimalpersen/persen.js";
 import { genUkurAku } from "../../js/content/domains/pengukuran/panjangPendek/variants/ukurAku.js";
 import { genUkurUrutkanTinggi } from "../../js/content/domains/pengukuran/tinggiPendek/variants/urutkanTinggi.js";
+import { genBeratRingan_PilihBerat } from "../../js/content/domains/pengukuran/beratRingan/variants/pilihBerat.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
@@ -40,6 +41,7 @@ import { renderPercentColor100 } from "../../js/game/renderers/percent_color_100
 import { renderUkurAkuPick } from "../../js/game/renderers/ukur_aku_pick.js";
 import { renderUkurSortHeightDrag } from "../../js/game/renderers/ukur_sort_height_drag.js";
 import { renderUkurCompareSignPick } from "../../js/game/renderers/ukur_compare_sign_pick.js";
+import { renderUkurWeightPickHeavier } from "../../js/game/renderers/ukur_weight_pick_heavier.js";
 
 const DEFAULT_QUESTIONS = 20;
 let totalQuestions = DEFAULT_QUESTIONS;
@@ -314,6 +316,7 @@ function renderQuestion(){
   document.body.classList.toggle("ukur-mode", q.type === "ukur_aku_pick");
   document.body.classList.toggle("ukurcmp-mode", q.type === "ukur_compare_sign_pick");
   document.body.classList.toggle("ukursortheight-mode", q.type === "ukur_sort_height_drag");
+  document.body.classList.toggle("ukurweight-mode", q.type === "ukur_weight_pick_heavier");
 
   currentAnswer = null;
   btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
@@ -386,6 +389,8 @@ function renderQuestion(){
   }else if(q.type === "ukur_compare_sign_pick"){
     questionTitle.textContent = q.prompt;
   }else if(q.type === "ukur_sort_height_drag"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "ukur_weight_pick_heavier"){
     questionTitle.textContent = q.prompt;
   }else{
     questionTitle.textContent = q.prompt;
@@ -569,6 +574,14 @@ function renderQuestion(){
     });
     speakPrompt(q.prompt);
   }
+  else if(q.type === "ukur_weight_pick_heavier"){
+    rendererController = renderUkurWeightPickHeavier({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
   else {
     // fallback debug
     questionBox.innerHTML = `<div style="padding:16px;font-weight:900">Tipe soal belum ada renderer: ${q.type}</div>`;
@@ -709,6 +722,9 @@ function submitAnswer(){
     const ans = Array.isArray(currentAnswer) ? currentAnswer : [];
     const target = Array.isArray(q.answer) ? q.answer : [];
     correct = ans.length === target.length && ans.every((v,i)=>String(v)===String(target[i]));
+  }
+  if(q.type === "ukur_weight_pick_heavier"){
+    correct = String(currentAnswer) === String(q.answer);
   }
 
   if(correct){
@@ -1028,9 +1044,27 @@ function generateUkurUrutkanTinggiGame(){
   }
   return shuffle(list);
 }
+function generateBeratRinganPilihBeratGame(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genBeratRingan_PilihBerat());
+  }
+  return shuffle(list);
+}
+
+function generateRotatingBilanganGame(){
+  const mode = localStorage.getItem("siswaBermainMode");
+
+  if(mode === "pilih_berat") return generateBeratRinganPilihBeratGame();
+  if(mode === "urutkan_gambar") return generateUkurUrutkanTinggiGame();
+  if(mode === "bil50") return generateBil50KumpulkanBintang();
+  if(mode === "bil100") return generateBil100TangkapAngka();
+
+  return generateBil20Mixed();
+}
 // ---------- INIT
 function init(){
-  questions = generateUkurUrutkanTinggiGame();
+  questions = generateRotatingBilanganGame();
   totalQuestions = questions.length;
   buildDots();
   index = 0;
