@@ -23,17 +23,18 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
         width:100%;
         max-width:980px;
         margin:0 auto;
-        display:flex;
-        flex-direction:column;
-        gap:18px;
+        display:grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap:16px;
+        align-items:center;
       }
       .ukurday-stage{
         position:relative;
         width:100%;
-        aspect-ratio: 16 / 9;
+        height:360px;
         border-radius:18px;
         overflow:hidden;
-        background: #dff2ff;
+        background: transparent;
         box-shadow: 0 16px 32px rgba(0,0,0,.12);
         border:2px solid rgba(0,0,0,.08);
       }
@@ -86,10 +87,11 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
         user-select:none;
       }
       .ukurday-options{
-        display:flex;
-        flex-wrap:wrap;
-        justify-content:center;
-        gap:12px;
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:10px 12px;
+        align-content:center;
+        justify-items:center;
       }
       .ukurday-btn{
         border:none;
@@ -113,16 +115,21 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
       .ukurday-btn.dragging{ opacity:.6; transform: scale(.96); }
       .ukurday-btn.used{ opacity:.35; }
       .ukurday-hint{
+        grid-column: 1 / -1;
         text-align:center;
         font-weight:800;
         color:#374151;
       }
       @media (max-width: 640px){
-        .ukurday-stage{ aspect-ratio: 4 / 3; }
-        .ukurday-sign{ width:120px; }
-        .ukurday-slot{ width:150px; height:190px; }
-        .ukurday-slot img{ width:130px; }
-        .ukurday-btn img{ width:92px; }
+        .ukurday-wrap{
+          grid-template-columns: 1fr;
+          gap:12px;
+        }
+        .ukurday-stage{ height:240px; }
+        .ukurday-sign{ width:100px; }
+        .ukurday-slot{ width:140px; height:170px; }
+        .ukurday-slot img{ width:120px; }
+        .ukurday-btn img{ width:86px; }
       }
     `;
     document.head.appendChild(style);
