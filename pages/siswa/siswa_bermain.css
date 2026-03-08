@@ -115,7 +115,7 @@ body.matchline-mode .stage {
 }
 /* stepper + checkpoint */
 .stepper {
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
   gap: 8px;
@@ -156,6 +156,42 @@ body.matchline-mode .stage {
 .checkpoint.now {
   border-color: rgba(63,91,255,.45);
   box-shadow: 0 10px 18px rgba(63,91,255,.18);
+}
+
+/* level transition (overlay) */
+.level-flow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-weight:900;
+  font-size:18px;
+  margin-bottom:6px;
+}
+.level-flow span{
+  opacity:0;
+}
+.level-prev{
+  animation: levelSlideIn .5s ease forwards;
+}
+.level-arrow{
+  animation: levelFadeIn .4s ease .25s forwards;
+}
+.level-next{
+  animation: levelSlideIn .5s ease .45s forwards;
+}
+.level-sub{
+  text-align:center;
+  font-weight:800;
+  color: var(--muted);
+}
+@keyframes levelSlideIn{
+  from{ transform: translateY(6px); opacity:0; }
+  to{ transform: translateY(0); opacity:1; }
+}
+@keyframes levelFadeIn{
+  from{ opacity:0; transform: scale(.9); }
+  to{ opacity:1; transform: scale(1); }
 }
 /* ========= ARENA / STAGE (lebih besar) ========= */
 .stage {

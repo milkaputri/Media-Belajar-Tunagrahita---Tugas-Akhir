@@ -235,9 +235,13 @@ function updateTopbar(){
   });
 }
 
-function showOverlay({title,text,img,primaryText,onPrimary}){
+function showOverlay({title,text,htmlText,img,primaryText,onPrimary}){
   overlayTitle.innerHTML=title;
-  overlayText.textContent=text;
+  if(htmlText !== undefined && htmlText !== null){
+    overlayText.innerHTML = htmlText;
+  }else{
+    overlayText.textContent=text;
+  }
   overlayImg.src=img;
   overlayPrimary.textContent=primaryText;
   overlaySecondary.classList.add("hidden");
@@ -260,9 +264,22 @@ function handleCorrectAnswer(){
   launchConfetti();
   overlayCard.classList.add("correct-pop");
 
+  const levelNow = index + 1;
+  const isLast = levelNow >= totalQuestions;
+  const levelNext = isLast ? levelNow : levelNow + 1;
+  const levelHtml = isLast
+    ? `<div class="level-flow"><span class="level-prev">Level ${levelNow} selesai</span></div>
+       <div class="level-sub">Kamu menuntaskan semua soal!</div>`
+    : `<div class="level-flow">
+         <span class="level-prev">Level ${levelNow} selesai</span>
+         <span class="level-arrow">→</span>
+         <span class="level-next">Masuk Level ${levelNext}</span>
+       </div>
+       <div class="level-sub">Jawaban kamu benar!</div>`;
+
   showOverlay({
     title:"HEBAT!",
-    text:"Jawaban kamu benar!",
+    htmlText: levelHtml,
     img:"../../assets/image/bird1.gif",
     primaryText:"LANJUT",
     onPrimary:()=> {
