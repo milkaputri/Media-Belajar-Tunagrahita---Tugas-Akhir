@@ -21,7 +21,7 @@ body {
   flex-direction:column;
 }
 #questionBox {
-  overflow-y: auto;
+  overflow: hidden;
 }
 body.matchline-mode #questionBox {
   overflow: hidden;
