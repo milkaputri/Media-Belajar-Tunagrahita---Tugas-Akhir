@@ -20,6 +20,7 @@ import { genUkurAku } from "../../js/content/domains/pengukuran/panjangPendek/va
 import { genUkurUrutkanTinggi } from "../../js/content/domains/pengukuran/tinggiPendek/variants/urutkanTinggi.js";
 import { genBeratRingan_PilihBerat } from "../../js/content/domains/pengukuran/beratRingan/variants/pilihBerat.js";
 import { genBeratRingan_UrutkanBerat } from "../../js/content/domains/pengukuran/beratRingan/variants/urutkanBerat.js";
+import { genHariBulan_LengkapiHari } from "../../js/content/domains/pengukuran/hariBulan/variants/lengkapiHari.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
@@ -43,6 +44,7 @@ import { renderUkurAkuPick } from "../../js/game/renderers/ukur_aku_pick.js";
 import { renderUkurSortHeightDrag } from "../../js/game/renderers/ukur_sort_height_drag.js";
 import { renderUkurCompareSignPick } from "../../js/game/renderers/ukur_compare_sign_pick.js";
 import { renderUkurWeightPickHeavier } from "../../js/game/renderers/ukur_weight_pick_heavier.js";
+import { renderUkurDayCompleteDrag } from "../../js/game/renderers/ukur_day_complete_drag.js";
 
 const DEFAULT_QUESTIONS = 20;
 let totalQuestions = DEFAULT_QUESTIONS;
@@ -335,6 +337,7 @@ function renderQuestion(){
   document.body.classList.toggle("ukurcmp-mode", q.type === "ukur_compare_sign_pick");
   document.body.classList.toggle("ukursortheight-mode", q.type === "ukur_sort_height_drag" || q.type === "ukur_sort_weight_drag");
   document.body.classList.toggle("ukurweight-mode", q.type === "ukur_weight_pick_heavier");
+  document.body.classList.toggle("ukurday-mode", q.type === "ukur_day_complete_drag");
 
   currentAnswer = null;
   btnSubmit.disabled = q.type === "catch_balloon_number" || q.type === "catch_number_rain";
@@ -411,6 +414,8 @@ function renderQuestion(){
   }else if(q.type === "ukur_sort_weight_drag"){
     questionTitle.textContent = q.prompt;
   }else if(q.type === "ukur_weight_pick_heavier"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "ukur_day_complete_drag"){
     questionTitle.textContent = q.prompt;
   }else{
     questionTitle.textContent = q.prompt;
@@ -610,6 +615,14 @@ function renderQuestion(){
     });
     speakPrompt(q.prompt);
   }
+  else if(q.type === "ukur_day_complete_drag"){
+    rendererController = renderUkurDayCompleteDrag({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
   else {
     // fallback debug
     questionBox.innerHTML = `<div style="padding:16px;font-weight:900">Tipe soal belum ada renderer: ${q.type}</div>`;
@@ -757,6 +770,9 @@ function submitAnswer(){
     correct = ans.length === target.length && ans.every((v,i)=>String(v)===String(target[i]));
   }
   if(q.type === "ukur_weight_pick_heavier"){
+    correct = String(currentAnswer) === String(q.answer);
+  }
+  if(q.type === "ukur_day_complete_drag"){
     correct = String(currentAnswer) === String(q.answer);
   }
 
@@ -1076,7 +1092,8 @@ function generateAllGamesOnce(){
     genUkurAku(),
     genUkurUrutkanTinggi(),
     genBeratRingan_PilihBerat(),
-    genBeratRingan_UrutkanBerat()
+    genBeratRingan_UrutkanBerat(),
+    genHariBulan_LengkapiHari()
   ]);
 }
 
@@ -1115,6 +1132,13 @@ function generateBeratRinganUrutkanBeratGame(){
   }
   return shuffle(list);
 }
+function generateHariBulanLengkapiHariGame(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genHariBulan_LengkapiHari());
+  }
+  return shuffle(list);
+}
 
 function generateRotatingBilanganGame(){
   const mode = localStorage.getItem("siswaBermainMode");
@@ -1138,6 +1162,7 @@ function generateRotatingBilanganGame(){
   if(mode === "ukur_aku") return generateUkurAku();
   if(mode === "pilih_berat") return generateBeratRinganPilihBeratGame();
   if(mode === "urutkan_berat") return generateBeratRinganUrutkanBeratGame();
+  if(mode === "hari_lengkapi") return generateHariBulanLengkapiHariGame();
   if(mode === "urutkan_gambar") return generateUkurUrutkanTinggiGame();
   if(mode === "bil50") return generateBil50KumpulkanBintang();
   if(mode === "bil100") return generateBil100TangkapAngka();
