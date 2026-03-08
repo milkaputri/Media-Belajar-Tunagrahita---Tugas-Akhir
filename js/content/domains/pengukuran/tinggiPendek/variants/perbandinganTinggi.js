@@ -3,23 +3,23 @@ function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) +
 const OBJECTS = [
   {
     name: "Pohon",
-    tall: "/assets/image/pohonTinggi.png",
-    short: "/assets/image/pohonPendek.png"
+    tall: "../../assets/image/pohonTinggi.png",
+    short: "../../assets/image/pohonPendek.png"
   },
   {
     name: "Gedung",
-    tall: "/assets/image/gedungTinggi.png",
-    short: "/assets/image/gedungPendek.png"
+    tall: "../../assets/image/gedungTinggi.png",
+    short: "../../assets/image/gedungPendek.png"
   },
   {
     name: "Tangga",
-    tall: "/assets/image/tanggaTinggi.png",
-    short: "/assets/image/tanggaPendek.png"
+    tall: "../../assets/image/tanggaTinggi.png",
+    short: "../../assets/image/tanggaPendek.png"
   },
   {
     name: "Orang",
-    tall: "/assets/image/orangTinggi.png",
-    short: "/assets/image/orangPendek.png"
+    tall: "../../assets/image/orangTinggi.png",
+    short: "../../assets/image/orangPendek.png"
   }
 ];
 

@@ -108,3 +108,46 @@
   .siswa-title{ font-size: 44px; }
   .panel-btn{ max-width: 360px; }
 }
+
+.game-picker-list{
+  display: grid;
+  gap: 14px;
+  max-height: min(70vh, 560px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.game-cat{
+  background: #f8fbff;
+  border: 2px solid #dbe8ff;
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.game-cat-title{
+  font-weight: 900;
+  color: #1f3b77;
+  font-size: 14px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.game-picker-btn{
+  width: 100%;
+  border: 2px solid #274690;
+  background: #ffffff;
+  color: #1b2a3a;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 800;
+  text-align: left;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
+}
+
+.game-picker-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(39,70,144,.15);
+  background: #f3f7ff;
+}

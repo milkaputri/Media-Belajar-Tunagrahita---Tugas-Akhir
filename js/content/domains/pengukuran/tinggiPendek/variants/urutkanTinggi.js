@@ -13,33 +13,33 @@ const OBJECTS = [
   {
     name: "Pohon",
     images: {
-      short: "/assets/image/pohonPendek.png",
-      medium: "/assets/image/pohonTengah.png",
-      tall: "/assets/image/pohonTinggi.png"
+      short: "../../assets/image/pohonPendek.png",
+      medium: "../../assets/image/pohonTengah.png",
+      tall: "../../assets/image/pohonTinggi.png"
     }
   },
   {
     name: "Gedung",
     images: {
-      short: "/assets/image/gedungPendek.png",
-      medium: "/assets/image/gedungTengah.png",
-      tall: "/assets/image/gedungTinggi.png"
+      short: "../../assets/image/gedungPendek.png",
+      medium: "../../assets/image/gedungTengah.png",
+      tall: "../../assets/image/gedungTinggi.png"
     }
   },
   {
     name: "Tangga",
     images: {
-      short: "/assets/image/tanggaPendek.png",
-      medium: "/assets/image/tanggaTengah.png",
-      tall: "/assets/image/tanggaTinggi.png"
+      short: "../../assets/image/tanggaPendek.png",
+      medium: "../../assets/image/tanggaTengah.png",
+      tall: "../../assets/image/tanggaTinggi.png"
     }
   },
   {
     name: "Orang",
     images: {
-      short: "/assets/image/orangPendek.png",
-      medium: "/assets/image/orangTengah.png",
-      tall: "/assets/image/orangTinggi.png"
+      short: "../../assets/image/orangPendek.png",
+      medium: "../../assets/image/orangTengah.png",
+      tall: "../../assets/image/orangTinggi.png"
     }
   }
 ];

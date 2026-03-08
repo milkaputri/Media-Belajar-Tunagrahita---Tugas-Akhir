@@ -178,19 +178,36 @@ document.getElementById("btnBelajar")?.addEventListener("click", async () => {
 });
 
 const btnBermain = document.getElementById("btnBermain");
-if (btnBermain) {
-  btnBermain.addEventListener("click", () => {
-    localStorage.setItem("siswaBermainMode", "pilih_berat");
+function startGame(mode) {
+  if (mode && mode !== "bil20_mix") {
+    localStorage.setItem("siswaBermainMode", mode);
+  } else {
+    localStorage.removeItem("siswaBermainMode");
+  }
 
-    const bgm = new Audio("../../assets/sounds/mp3.1.mp3");
-    bgm.loop = true;
-    bgm.volume = 0.4;
+  const bgm = new Audio("../../assets/sounds/mp3.1.mp3");
+  bgm.loop = true;
+  bgm.volume = 0.4;
 
-    bgm.play().then(() => {
-      sessionStorage.setItem("bgmUnlocked", "1");
-      window.location.href = "./siswa_bermain.html";
-    }).catch(() => {
-      window.location.href = "./siswa_bermain.html";
-    });
+  bgm.play().then(() => {
+    sessionStorage.setItem("bgmUnlocked", "1");
+    window.location.href = "./siswa_bermain.html";
+  }).catch(() => {
+    window.location.href = "./siswa_bermain.html";
   });
 }
+
+if (btnBermain) {
+  btnBermain.addEventListener("click", () => {
+    playClickSfx();
+    UI.openModal("modalGamePicker");
+  });
+}
+
+document.querySelectorAll(".game-picker-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    playClickSfx();
+    const mode = btn.dataset.mode || "bil20_mix";
+    startGame(mode);
+  });
+});

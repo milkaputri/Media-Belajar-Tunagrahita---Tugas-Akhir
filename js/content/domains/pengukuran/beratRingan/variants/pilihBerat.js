@@ -10,12 +10,13 @@ function shuffle(arr){
 }
 
 const OBJECTS = [
-  { id: "apple", name: "Apel", image: "/assets/image/apple.png", weight: 1 },
-  { id: "donut", name: "Donat", image: "/assets/image/donat.png", weight: 1 },
-  { id: "pizza", name: "Pizza", image: "/assets/image/pizza.png", weight: 2 },
-  { id: "plate", name: "Piring", image: "/assets/image/piring.png", weight: 2 },
-  { id: "chair", name: "Kursi", image: "/assets/image/kursi.png", weight: 4 },
-  { id: "piggy", name: "Celengan", image: "/assets/image/celengan.png", weight: 3 }
+  { id: "emberApel", name: "Ember Apel", image: "../../assets/image/emberApel.png", weight: 1 },
+  { id: "karungBeras", name: "Karung Beras", image: "../../assets/image/karungBeras.png", weight: 7 },
+  { id: "batu", name: "Batu", image: "../../assets/image/batu.png", weight: 2 },
+  { id: "jaringIkan", name: "Jaring Ikan", image: "../../assets/image/jaringIkan.png", weight: 3 },
+  { id: "boxApel", name: "Box Apel", image: "../../assets/image/boxApel.png", weight: 4 },
+  { id: "boxSemangka", name: "Box Semangka", image: "../../assets/image/boxSemangka.png", weight: 6 },
+  { id: "boxManggis", name: "Box Manggis", image: "../../assets/image/boxManggis.png", weight: 5 }
 ];
 
 export function genBeratRingan_PilihBerat(){
@@ -57,3 +58,4 @@ export function genBeratRingan_PilihBerat(){
     answer
   };
 }
+

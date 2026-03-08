@@ -11,34 +11,34 @@ function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 const OBJECTS = [
   {
     name: "Pensil",
-    long: "/assets/image/pensilPanjang.png",
-    short: "/assets/image/pensilPendek.png"
+    long: "../../assets/image/pensilPanjang.png",
+    short: "../../assets/image/pensilPendek.png"
   },
   
   {
     name: "Tali",
-    long: "/assets/image/taliPanjang.png",
-    short: "/assets/image/taliPendek.png"
+    long: "../../assets/image/taliPanjang.png",
+    short: "../../assets/image/taliPendek.png"
   },
   {
     name: "Rantai",
-    long: "/assets/image/rantaiPanjang.png",
-    short: "/assets/image/rantaiPendek.png"
+    long: "../../assets/image/rantaiPanjang.png",
+    short: "../../assets/image/rantaiPendek.png"
   },
   {
     name: "Penggaris",
-    long: "/assets/image/penggarisPanjang.png",
-    short: "/assets/image/penggarisPendek.png"
+    long: "../../assets/image/penggarisPanjang.png",
+    short: "../../assets/image/penggarisPendek.png"
   },
   {
     name: "Sapu",
-    long: "/assets/image/sapuPanjang.png",
-    short: "/assets/image/sapuPendek.png"
+    long: "../../assets/image/sapuPanjang.png",
+    short: "../../assets/image/sapuPendek.png"
   },
   {
     name: "Kereta",
-    long: "/assets/image/keretaPanjang.png",
-    short: "/assets/image/keretaPendek.png"
+    long: "../../assets/image/keretaPanjang.png",
+    short: "../../assets/image/keretaPendek.png"
   }
 ];
 

@@ -42,7 +42,7 @@ export function renderUkurWeightPickHeavier({ mount, q, onAnswerChange }){
 
     const label = document.createElement("div");
     label.className = "ukurwt-label";
-    label.textContent = item.name || "Benda";
+    label.textContent = `${Number(item.weight) || 0}kg`;
 
     btn.appendChild(img);
     btn.appendChild(label);
@@ -74,3 +74,4 @@ export function renderUkurWeightPickHeavier({ mount, q, onAnswerChange }){
 
   return { getAnswer: () => selected };
 }
+

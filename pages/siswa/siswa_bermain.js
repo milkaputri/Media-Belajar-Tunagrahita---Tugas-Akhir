@@ -19,6 +19,7 @@ import { genPersen_Warnai100 } from "../../js/content/domains/bilangan/desimalpe
 import { genUkurAku } from "../../js/content/domains/pengukuran/panjangPendek/variants/ukurAku.js";
 import { genUkurUrutkanTinggi } from "../../js/content/domains/pengukuran/tinggiPendek/variants/urutkanTinggi.js";
 import { genBeratRingan_PilihBerat } from "../../js/content/domains/pengukuran/beratRingan/variants/pilihBerat.js";
+import { genBeratRingan_UrutkanBerat } from "../../js/content/domains/pengukuran/beratRingan/variants/urutkanBerat.js";
 import { renderCountObjectsPickNumber } from "../../js/game/renderers/count_objects_pick_number.js";
 import { genNilaiTempat_NilaiGambar } from "../../js/content/domains/bilangan/nilaiTempat/variants/nilaiGambar.js";
 import { renderImagePlaceValuePick } from "../../js/game/renderers/image_place_value_pick.js";
@@ -315,7 +316,7 @@ function renderQuestion(){
   document.body.classList.toggle("percent-mode", q.type === "percent_color_100");
   document.body.classList.toggle("ukur-mode", q.type === "ukur_aku_pick");
   document.body.classList.toggle("ukurcmp-mode", q.type === "ukur_compare_sign_pick");
-  document.body.classList.toggle("ukursortheight-mode", q.type === "ukur_sort_height_drag");
+  document.body.classList.toggle("ukursortheight-mode", q.type === "ukur_sort_height_drag" || q.type === "ukur_sort_weight_drag");
   document.body.classList.toggle("ukurweight-mode", q.type === "ukur_weight_pick_heavier");
 
   currentAnswer = null;
@@ -389,6 +390,8 @@ function renderQuestion(){
   }else if(q.type === "ukur_compare_sign_pick"){
     questionTitle.textContent = q.prompt;
   }else if(q.type === "ukur_sort_height_drag"){
+    questionTitle.textContent = q.prompt;
+  }else if(q.type === "ukur_sort_weight_drag"){
     questionTitle.textContent = q.prompt;
   }else if(q.type === "ukur_weight_pick_heavier"){
     questionTitle.textContent = q.prompt;
@@ -574,6 +577,14 @@ function renderQuestion(){
     });
     speakPrompt(q.prompt);
   }
+  else if(q.type === "ukur_sort_weight_drag"){
+    rendererController = renderUkurSortHeightDrag({
+      mount: questionBox,
+      q,
+      onAnswerChange: (v) => { currentAnswer = v; }
+    });
+    speakPrompt(q.prompt);
+  }
   else if(q.type === "ukur_weight_pick_heavier"){
     rendererController = renderUkurWeightPickHeavier({
       mount: questionBox,
@@ -719,6 +730,11 @@ function submitAnswer(){
     correct = String(currentAnswer) === String(q.answer);
   }
   if(q.type === "ukur_sort_height_drag"){
+    const ans = Array.isArray(currentAnswer) ? currentAnswer : [];
+    const target = Array.isArray(q.answer) ? q.answer : [];
+    correct = ans.length === target.length && ans.every((v,i)=>String(v)===String(target[i]));
+  }
+  if(q.type === "ukur_sort_weight_drag"){
     const ans = Array.isArray(currentAnswer) ? currentAnswer : [];
     const target = Array.isArray(q.answer) ? q.answer : [];
     correct = ans.length === target.length && ans.every((v,i)=>String(v)===String(target[i]));
@@ -902,6 +918,27 @@ function generateBil20Mixed(){
 
   return shuffle(list); // pakai shuffle yang di HELPERS
 }
+function generateBil20Mengenal(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genBil20_MengenalAngka());
+  }
+  return shuffle(list);
+}
+function generateBil20TarikGaris(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genBil20_TarikGaris());
+  }
+  return shuffle(list);
+}
+function generateBil20Urutkan(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genBil20_Urutkan());
+  }
+  return shuffle(list);
+}
 
 function generateBil50KumpulkanBintang(){
   const list = [];
@@ -1019,7 +1056,10 @@ function generateAllGamesOnce(){
     genPecahan_BagiPizza(),
     genPecahan_BandingkanPizza(),
     genPersen_Warnai100(),
-    genUkurAku()
+    genUkurAku(),
+    genUkurUrutkanTinggi(),
+    genBeratRingan_PilihBerat(),
+    genBeratRingan_UrutkanBerat()
   ]);
 }
 
@@ -1051,11 +1091,36 @@ function generateBeratRinganPilihBeratGame(){
   }
   return shuffle(list);
 }
+function generateBeratRinganUrutkanBeratGame(){
+  const list = [];
+  for(let i=0;i<DEFAULT_QUESTIONS;i++){
+    list.push(genBeratRingan_UrutkanBerat());
+  }
+  return shuffle(list);
+}
 
 function generateRotatingBilanganGame(){
   const mode = localStorage.getItem("siswaBermainMode");
 
+  if(mode === "all_once") return generateAllGamesOnce();
+  if(mode === "bil20_mengenal") return generateBil20Mengenal();
+  if(mode === "bil20_tarik_garis") return generateBil20TarikGaris();
+  if(mode === "bil20_urutkan") return generateBil20Urutkan();
+  if(mode === "uang20_kenal") return generateUang20KenalUang();
+  if(mode === "uang20_belanja") return generateUang20BelanjaBarang();
+  if(mode === "uang50_benar_tidak") return generateUang50BenarTidak();
+  if(mode === "uang50_celengan") return generateUang50CelenganKu();
+  if(mode === "bil50_tambah_mobil") return generateBil50TambahMobil();
+  if(mode === "bil50_kurang_apel") return generateBil50KurangApel();
+  if(mode === "bil50_bagi_donat") return generateBil50BagiDonat();
+  if(mode === "bil50_kali_kursi") return generateBil50KaliKursi();
+  if(mode === "pecahan_bagi_pizza") return generatePecahanBagiPizza();
+  if(mode === "pecahan_banding_pizza") return generatePecahanBandingkanPizza();
+  if(mode === "desimal_botol") return generateDesimalBotolAir();
+  if(mode === "persen_warnai") return generatePersenWarnai100();
+  if(mode === "ukur_aku") return generateUkurAku();
   if(mode === "pilih_berat") return generateBeratRinganPilihBeratGame();
+  if(mode === "urutkan_berat") return generateBeratRinganUrutkanBeratGame();
   if(mode === "urutkan_gambar") return generateUkurUrutkanTinggiGame();
   if(mode === "bil50") return generateBil50KumpulkanBintang();
   if(mode === "bil100") return generateBil100TangkapAngka();
