@@ -21,22 +21,24 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
     style.textContent = `
       .ukurday-wrap{
         width:100%;
-        max-width:980px;
-        margin:0 auto;
+        max-width:100%;
+        margin:0;
         display:grid;
-        grid-template-columns: minmax(0, 1fr) 300px;
-        gap:16px;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap:28px;
         align-items:center;
       }
       .ukurday-stage{
         position:relative;
         width:100%;
+        max-width:560px;
         height:360px;
         border-radius:18px;
         overflow:hidden;
         background: transparent;
         box-shadow: 0 16px 32px rgba(0,0,0,.12);
         border:2px solid rgba(0,0,0,.08);
+        justify-self:start;
       }
       .ukurday-bg{
         position:absolute;
@@ -89,8 +91,8 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
       .ukurday-options{
         display:grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        column-gap:50px;
-        row-gap:50px;
+        column-gap:150px;
+        row-gap:10px;
         align-content:center;
         justify-items:center;
       }
