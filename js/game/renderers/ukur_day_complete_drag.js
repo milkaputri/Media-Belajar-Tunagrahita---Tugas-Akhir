@@ -21,7 +21,7 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
     style.textContent = `
       .ukurday-wrap{
         width:100%;
-        max-width:100%;
+        max-width:80%;
         margin:0;
         display:grid;
         grid-template-columns: minmax(0, 1fr) 360px;
