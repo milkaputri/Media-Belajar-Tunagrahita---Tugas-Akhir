@@ -235,7 +235,7 @@ document.getElementById("btnLoginSiswa")?.addEventListener("click", () => {
   }
 
   localStorage.setItem("dummy_siswa_nama", depan);
-  window.location.href = "../../pages/siswa/siswa_home.html";
+  window.location.href = "pages/siswa/siswa_home.html";
 });
 
 // =========================================================
