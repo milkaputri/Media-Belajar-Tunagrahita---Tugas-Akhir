@@ -51,7 +51,7 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
         position:absolute;
         bottom:18%;
         width:160px;
-        height:210px;
+        height:auto;
         user-select:none;
         pointer-events:none;
         filter: drop-shadow(0 8px 10px rgba(0,0,0,.18));
@@ -62,7 +62,7 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
       .ukurday-slot{
         position:absolute;
         left:50%;
-        top:16%;
+        top:28%;
         transform: translateX(-50%);
         width:180px;
         height:220px;
@@ -81,7 +81,7 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
       }
       .ukurday-slot img{
         width:160px;
-        height:210px;
+        height:auto;
         object-fit:contain;
         pointer-events:none;
         user-select:none;
@@ -104,7 +104,7 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
       }
       .ukurday-btn img{
         width:120px;
-        height:170px;
+        height:auto;
         display:block;
         pointer-events:none;
         user-select:none;
@@ -127,10 +127,10 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
           gap:12px;
         }
         .ukurday-stage{ height:240px; }
-        .ukurday-sign{ width:100px; height:150px; }
+        .ukurday-sign{ width:100px; height:auto; }
         .ukurday-slot{ width:140px; height:170px; }
-        .ukurday-slot img{ width:120px; height:150px; }
-        .ukurday-btn img{ width:86px; height:120px; }
+        .ukurday-slot img{ width:120px; height:auto; }
+        .ukurday-btn img{ width:86px; height:auto; }
       }
     `;
     document.head.appendChild(style);
