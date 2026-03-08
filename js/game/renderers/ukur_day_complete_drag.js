@@ -88,7 +88,7 @@ export function renderUkurDayCompleteDrag({ mount, q, onAnswerChange }){
       }
       .ukurday-options{
         display:grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap:10px 12px;
         align-content:center;
         justify-items:center;
