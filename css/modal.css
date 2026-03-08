@@ -158,3 +158,20 @@
   opacity:1;
   transform: translateX(-50%) translateY(-6px);
 }
+
+.about-table .table{
+  width: 100%;
+  font-size: 14px;
+}
+
+.about-table th,
+.about-table td{
+  padding: 10px 12px;
+  vertical-align: top;
+}
+
+@media (max-width: 768px){
+  .about-table .table{
+    font-size: 12px;
+  }
+}
